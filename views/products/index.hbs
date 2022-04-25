@@ -1,0 +1,59 @@
+{{#extends 'base'}}
+
+{{#block 'content'}}
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Size</th>
+            <th>Item Description</th>
+            <th>Benefits</th>
+            <th>Application</th>
+            <th>Directions</th>
+            <th>Stock</th>
+        </tr>
+
+    </thead>
+    <tbody>
+        {{#each essential_oils}}
+            <tr>
+                <td>
+                    {{this.id}}
+                </td>
+                <td>
+                    {{this.image}}
+                </td>
+                <td>
+                    {{this.name}}
+                </td>
+                <td>
+                    {{this.price}}
+                </td>
+                <td>
+                    {{this.size}}
+                </td>
+                <td>
+                    {{this.item_description}}
+                </td>
+                <td>
+                    {{this.benefits_description}}
+                </td>
+                <td>
+                    {{this.application}}
+                </td>
+                <td>
+                    {{this.directions}}
+                </td>
+                <td>
+                    {{this.stock}}
+                </td>
+            </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{/block}}
+
+{{/extends}}
