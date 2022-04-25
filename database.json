@@ -1,0 +1,8 @@
+{
+    "dev": {
+      "driver": "mysql",
+      "user": "neomq",
+      "password":"Lazyapple123",
+      "database":"essential_oils"
+    }
+  }
