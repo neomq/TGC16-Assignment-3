@@ -15,13 +15,13 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up =  function(db) {
-  return db.addColumn('essentialOils', 'size_id', {
+  return db.addColumn('products', 'note_id', {
       type: 'int',
       unsigned: true,
       notNull : true,
       foreignKey: {
-          name: 'essentialOils_size_fk',
-          table: 'size',
+          name: 'products_note_fk',
+          table: 'note',
           rules: {
               onDelete:'cascade',
               onUpdate:'restrict'

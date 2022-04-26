@@ -1,17 +1,27 @@
 const bookshelf = require('../bookshelf')
 
-const Essentialoil = bookshelf.model('Essentialoil', {
-    tableName:'essentialOils',
+const Products = bookshelf.model('Products', {
+    tableName:'products',
     note() {
         return this.belongsTo('Note')
+    },
+    size() {
+        return this.belongsTo('Size')
     }
 });
 
 const Note = bookshelf.model('Note', {
     tableName:'note',
-    essentialoils() {
-        return this.hasMany('Essentialoil')
+    products() {
+        return this.hasMany('Products')
     }
 });
 
-module.exports = { Essentialoil, Note };
+const Size = bookshelf.model('Size', {
+    tableName:'size',
+    products() {
+        return this.hasMany('Products')
+    }
+});
+
+module.exports = { Products, Note, Size };

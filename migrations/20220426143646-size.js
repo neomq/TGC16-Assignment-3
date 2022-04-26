@@ -23,8 +23,8 @@ exports.up = function (db) {
       autoIncrement: true
     },
     size: {
-      type: 'int',
-      unsigned: true,
+      type: 'string',
+      length: 10,
       notNull: true
     }
   })

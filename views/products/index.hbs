@@ -8,46 +8,30 @@
         <tr>
             <th>ID</th>
             <th>Image</th>
-            <th>Name</th>
+            <th>Size</th>
             <th>Price</th>
-            <th>Item Description</th>
             <th>Note</th>
-            <th>Benefits</th>
-            <th>Application</th>
-            <th>Directions</th>
             <th>Stock</th>
         </tr>
 
     </thead>
     <tbody>
-        {{#each essential_oils}}
+        {{#each products}}
             <tr>
                 <td>
                     {{this.id}}
                 </td>
                 <td>
-                    {{this.image}}
+                    {{this.name}}
                 </td>
                 <td>
-                    {{this.name}}
+                    {{this.size.size}}
                 </td>
                 <td>
                     {{this.price}}
                 </td>
                 <td>
-                    {{this.item_description}}
-                </td>
-                <td>
                     {{this.note.name}}
-                </td>
-                <td>
-                    {{this.benefits_description}}
-                </td>
-                <td>
-                    {{this.application}}
-                </td>
-                <td>
-                    {{this.directions}}
                 </td>
                 <td>
                     {{this.stock}}

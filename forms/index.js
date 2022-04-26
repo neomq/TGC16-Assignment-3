@@ -25,64 +25,23 @@ var bootstrapField = function (name, object) {
     return '<div class="form-group">' + label + widget + error + '</div>';
 };
 
-const createProductForm = (note) => {
+const createProductForm = (note, size) => {
     return forms.create({
-        'name': fields.string({
-            required: true,
-            errorAfterField: true,
-            cssClasses: {
-                label: ['form-label']
-            }
-        }),
         'image': fields.string({
             required: true
             //widget: widgets.hidden()
         }),
-        'price': fields.string({
+        'size_id': fields.string({
+            label:'Size',
             required: true,
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
             },
-            'validators':[validators.integer()]
+            widget: widgets.select(),
+            choices: size
         }),
-        // 'size': fields.string({
-        //     required: true,
-        //     errorAfterField: true,
-        //     cssClasses: {
-        //         label: ['form-label']
-        //     },
-        //     'validators':[validators.integer()]
-        // }),
-        'item_description': fields.string({
-            required: true,
-            errorAfterField: true,
-            cssClasses: {
-                label: ['form-label']
-            }
-        }),
-        'application': fields.string({
-            required: true,
-            errorAfterField: true,
-            cssClasses: {
-                label: ['form-label']
-            }
-        }),
-        'directions': fields.string({
-            required: true,
-            errorAfterField: true,
-            cssClasses: {
-                label: ['form-label']
-            }
-        }),
-        'benefits_description': fields.string({
-            required: true,
-            errorAfterField: true,
-            cssClasses: {
-                label: ['form-label']
-            }
-        }),
-        'stock': fields.string({
+        'price': fields.string({
             required: true,
             errorAfterField: true,
             cssClasses: {
@@ -99,6 +58,14 @@ const createProductForm = (note) => {
             },
             widget: widgets.select(),
             choices: note
+        }),
+        'stock': fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            'validators':[validators.integer()]
         })
     })
 };
