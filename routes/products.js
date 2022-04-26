@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 // import in the Product model
-const { Products, Note, Size } = require('../models');
+const { Products, Note, Size, Essentialoils } = require('../models');
 
 // import in the Forms
 const { bootstrapField, createProductForm } = require('../forms');
@@ -10,11 +10,12 @@ const { bootstrapField, createProductForm } = require('../forms');
 router.get('/', async (req, res) => {
     // fetch all the essential oils (ie, SELECT * from essentialOils)
     let products = await Products.collection().fetch({
-        withRelated:['note', 'size']
+        withRelated:['note', 'size', 'essentialoil']
     });
     res.render('products/index', {
         'products': products.toJSON() // convert collection to JSON
     })
+    console.log(products.toJSON())
 })
 
 // render create form
@@ -26,8 +27,11 @@ router.get('/create', async (req, res) => {
     const allSizes = await Size.fetchAll().map((s) => {
         return [s.get('id'), s.get('size')];
     })
+    const allEssentialOils = await Essentialoils.fetchAll().map((e) => {
+        return [e.get('id'), e.get('name')];
+    })
 
-    const productForm = createProductForm(allNotes, allSizes);
+    const productForm = createProductForm(allNotes, allSizes, allEssentialOils);
     
     res.render('products/create', {
         'form': productForm.toHTML(bootstrapField)
@@ -43,8 +47,11 @@ router.post('/create', async(req, res) => {
     const allSizes = await Size.fetchAll().map((s) => {
         return [s.get('id'), s.get('size')];
     })
+    const allEssentialOils = await Essentialoils.fetchAll().map((e) => {
+        return [e.get('id'), e.get('name')];
+    })
 
-    const productForm = createProductForm(allNotes, allSizes);
+    const productForm = createProductForm(allNotes, allSizes, allEssentialOils);
     
     productForm.handle(req, {
         'success': async (form) => {

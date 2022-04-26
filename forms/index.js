@@ -25,11 +25,21 @@ var bootstrapField = function (name, object) {
     return '<div class="form-group">' + label + widget + error + '</div>';
 };
 
-const createProductForm = (note, size) => {
+const createProductForm = (note, size, essentialOils) => {
     return forms.create({
         'image': fields.string({
             required: true
             //widget: widgets.hidden()
+        }),
+        'essentialOil_id': fields.string({
+            label:'Essential Oil Name',
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.select(),
+            choices: essentialOils
         }),
         'size_id': fields.string({
             label:'Size',

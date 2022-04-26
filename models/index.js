@@ -7,6 +7,9 @@ const Products = bookshelf.model('Products', {
     },
     size() {
         return this.belongsTo('Size')
+    },
+    essentialoil() {
+        return this.belongsTo('Essentialoils')
     }
 });
 
@@ -24,4 +27,11 @@ const Size = bookshelf.model('Size', {
     }
 });
 
-module.exports = { Products, Note, Size };
+const Essentialoils = bookshelf.model('Essentialoils', {
+    tableName:'essentialOils',
+    products() {
+        return this.hasMany('Products')
+    }
+});
+
+module.exports = { Products, Note, Size, Essentialoils };
