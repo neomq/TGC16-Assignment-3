@@ -25,7 +25,7 @@ var bootstrapField = function (name, object) {
     return '<div class="form-group">' + label + widget + error + '</div>';
 };
 
-const createProductForm = () => {
+const createProductForm = (note) => {
     return forms.create({
         'name': fields.string({
             required: true,
@@ -46,14 +46,14 @@ const createProductForm = () => {
             },
             'validators':[validators.integer()]
         }),
-        'size': fields.string({
-            required: true,
-            errorAfterField: true,
-            cssClasses: {
-                label: ['form-label']
-            },
-            'validators':[validators.integer()]
-        }),
+        // 'size': fields.string({
+        //     required: true,
+        //     errorAfterField: true,
+        //     cssClasses: {
+        //         label: ['form-label']
+        //     },
+        //     'validators':[validators.integer()]
+        // }),
         'item_description': fields.string({
             required: true,
             errorAfterField: true,
@@ -89,6 +89,16 @@ const createProductForm = () => {
                 label: ['form-label']
             },
             'validators':[validators.integer()]
+        }),
+        'note_id': fields.string({
+            label:'Note',
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.select(),
+            choices: note
         })
     })
 };

@@ -14,28 +14,25 @@ exports.setup = function(options, seedLink) {
   seed = seedLink;
 };
 
-exports.up = function (db) {
-  return db.createTable('note', {
-    id: {
+exports.up =  function(db) {
+  return db.addColumn('essentialOils', 'size_id', {
       type: 'int',
       unsigned: true,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    name: {
-      type: 'string',
-      length: 50,
-      notNull: true
-    },
-    description: {
-      type: 'string',
-      length: 500
-    }
+      notNull : true,
+      foreignKey: {
+          name: 'essentialOils_size_fk',
+          table: 'size',
+          rules: {
+              onDelete:'cascade',
+              onUpdate:'restrict'
+          },
+          mapping: 'id'
+      }
   })
-};
+}
 
 exports.down = function(db) {
-  return db.dropTable('note');
+  return null;
 };
 
 exports._meta = {

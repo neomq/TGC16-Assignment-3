@@ -15,42 +15,14 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function (db) {
-  return db.createTable('essentialOils', {
+  return db.createTable('size', {
     id: {
       type: 'int',
       unsigned: true,
       primaryKey: true,
       autoIncrement: true
     },
-    name: {
-      type: 'string',
-      length: 100,
-      notNull: true
-    },
-    image: {
-      type: 'string',
-      length: 2048,
-      notNull: true
-    },
-    price: {
-      type: 'int',
-      unsigned: true,
-      notNull: true
-    },
-    item_description: {
-      type: 'text',
-      notNull: true
-    },
-    application: {
-      type: 'text'
-    },
-    directions: {
-      type: 'text'
-    },
-    benefits_description: {
-      type: 'text'
-    },
-    stock: {
+    size: {
       type: 'int',
       unsigned: true,
       notNull: true
@@ -59,7 +31,7 @@ exports.up = function (db) {
 };
 
 exports.down = function(db) {
-  return db.dropTable('essentialOils');
+  return db.dropTable('size');
 };
 
 exports._meta = {
