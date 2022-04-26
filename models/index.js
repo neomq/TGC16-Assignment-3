@@ -4,4 +4,8 @@ const Essentialoil = bookshelf.model('Essentialoil', {
     tableName:'essentialOils'
 });
 
-module.exports = { Essentialoil };
+const Note = bookshelf.model('Note', {
+    tableName:'note'
+});
+
+module.exports = { Essentialoil, Note };
