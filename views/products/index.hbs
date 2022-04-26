@@ -7,18 +7,22 @@
 
  <div class="d-flex">
     {{!-- Navigation --}}
-        <ul class="nav nav-pills flex-column w-25 pe-3 bg-light">
+    <div class="w-25 p-3 bg-light">
+        <ul class="nav nav-pills flex-column">
             <li class="nav-item">
                 <a class="nav-link" aria-current="page" href="/essential-oils">View</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/essential-oils/create">Add</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Search</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Edit Product Info</a>
+                <a class="nav-link" href="/essential-oils/create">Add</a>
+            </li>
+            <li>
+                <hr/>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Edit Essential Oils Info</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Edit Note</a>
@@ -27,52 +31,53 @@
                 <a class="nav-link" href="#">Edit Size</a>
             </li>
         </ul>
-    
+    </div>
+        
     {{!-- Tables --}}
-        <div class="w-75 ps-3">
-            <h4>View All Products</h4>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Size</th>
-                        <th>Price(SGD)</th>
-                        <th>Note</th>
-                        <th>Stock</th>
-                    </tr>
+    <div class="w-75 ms-3">
+        <h4>View All Products</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Size</th>
+                    <th>Price(SGD)</th>
+                    <th>Note</th>
+                    <th>Stock</th>
+                </tr>
 
-                </thead>
-                <tbody>
-                    {{#each products}}
-                    <tr>
-                        <td>
-                            {{this.id}}
-                        </td>
-                        <td>
-                            {{this.image}}
-                        </td>
-                        <td>
-                            {{this.essentialoil.name}}
-                        </td>
-                        <td>
-                            {{this.size.size}}
-                        </td>
-                        <td>
-                            {{this.price}}
-                        </td>
-                        <td>
-                            {{this.note.name}}
-                        </td>
-                        <td>
-                            {{this.stock}}
-                        </td>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
-        </div>
+            </thead>
+            <tbody>
+                {{#each products}}
+                <tr>
+                    <td>
+                        {{this.id}}
+                    </td>
+                    <td>
+                        {{this.image}}
+                    </td>
+                    <td>
+                        {{this.essentialoil.name}}
+                    </td>
+                    <td>
+                        {{this.size.size}}
+                    </td>
+                    <td>
+                        {{this.price}}
+                    </td>
+                    <td>
+                        {{this.note.name}}
+                    </td>
+                    <td>
+                        {{this.stock}}
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
         
 </div>
 
