@@ -10,6 +10,9 @@ const Products = bookshelf.model('Products', {
     },
     essentialoil() {
         return this.belongsTo('Essentialoils')
+    },
+    scent() {
+        return this.belongsToMany('Scent');
     }
 });
 
@@ -34,4 +37,11 @@ const Essentialoils = bookshelf.model('Essentialoils', {
     }
 });
 
-module.exports = { Products, Note, Size, Essentialoils };
+const Scent = bookshelf.model('Scent', {
+    tableName:'scent',
+    products() {
+        return this.this.belongsToMany('Products')
+    }
+});
+
+module.exports = { Products, Note, Size, Essentialoils, Scent };

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 // import in the Product model
-const { Products, Note, Size, Essentialoils } = require('../models');
+const { Products, Note, Size, Essentialoils, Scent } = require('../models');
 
 // import in the Forms
 const { bootstrapField, createProductForm } = require('../forms');
@@ -10,7 +10,7 @@ const { bootstrapField, createProductForm } = require('../forms');
 router.get('/', async (req, res) => {
     // fetch all the essential oils (ie, SELECT * from essentialOils)
     let products = await Products.collection().fetch({
-        withRelated:['note', 'size', 'essentialoil']
+        withRelated:['note', 'size', 'essentialoil', 'scent']
     });
     res.render('products/index', {
         'products': products.toJSON() // convert collection to JSON
@@ -31,7 +31,10 @@ router.get('/create', async (req, res) => {
         return [e.get('id'), e.get('name')];
     })
 
-    const productForm = createProductForm(allNotes, allSizes, allEssentialOils);
+    const allScents = await Scent.fetchAll().map( scent => [scent.get('id'), scent.get('type')]);
+
+
+    const productForm = createProductForm(allNotes, allSizes, allEssentialOils, allScents);
     
     res.render('products/create', {
         'form': productForm.toHTML(bootstrapField)
@@ -51,13 +54,16 @@ router.post('/create', async(req, res) => {
         return [e.get('id'), e.get('name')];
     })
 
-    const productForm = createProductForm(allNotes, allSizes, allEssentialOils);
+    const allScents = await Scent.fetchAll().map( scent => [scent.get('id'), scent.get('type')]);
+
+    const productForm = createProductForm(allNotes, allSizes, allEssentialOils, allScents);
     
     productForm.handle(req, {
         'success': async (form) => {
             
-            const product = new Products(form.data);
-
+            let {scent, ...productData} = form.data;
+            const product = new Products(productData);
+            
             // essentialoil.set('image', form.data.image);
             // essentialoil.set('price', form.data.price);
             // essentialoil.set('size', form.data.size);
@@ -66,6 +72,11 @@ router.post('/create', async(req, res) => {
             // essentialoil.set('size_id', form.data.size_id);
             
             await product.save();
+
+            if (scent) {
+                await product.scent().attach(scent.split(","));
+            }
+
             res.redirect('/essential-oils');
         },
         'error': async (form) => {
