@@ -47,6 +47,7 @@
                     <th>Note</th>
                     <th>Scent</th>
                     <th>Stock</th>
+                    <th></th>
                 </tr>
 
             </thead>
@@ -72,8 +73,17 @@
                         {{this.note.name}}
                     </td>
                     <td>
+                        {{#each this.scent}}
+                            <span class="badge bg-primary">{{this.type}}</span>
+                        {{/each}}
+                    </td>
+                    <td>
                         {{this.stock}}
                     </td>
+                    <td>
+                    <a class="btn btn-primary btn-sm" href="/essential-oils/{{this.id}}/update">Update</a>
+                    {{!-- <a class="btn btn-danger btn-sm" href="/posters/{{this.id}}/delete">Delete</a> --}}
+                </td>
                 </tr>
                 {{/each}}
             </tbody>
@@ -81,8 +91,5 @@
     </div>
         
 </div>
-
-
 {{/block}}
-
 {{/extends}}

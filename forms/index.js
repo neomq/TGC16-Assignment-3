@@ -69,14 +69,6 @@ const createProductForm = (note, size, essentialOils, scent) => {
             widget: widgets.select(),
             choices: note
         }),
-        'stock': fields.string({
-            required: true,
-            errorAfterField: true,
-            cssClasses: {
-                label: ['form-label']
-            },
-            'validators':[validators.integer()]
-        }),
         'scent': fields.string({
             required: true,
             errorAfterField: true,
@@ -85,6 +77,14 @@ const createProductForm = (note, size, essentialOils, scent) => {
             },
             widget: widgets.multipleSelect(),
             choices: scent
+        }),
+        'stock': fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            'validators':[validators.integer()]
         })
     })
 };
