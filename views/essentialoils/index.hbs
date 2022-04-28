@@ -35,69 +35,56 @@
         
     {{!-- Tables --}}
     <div class="w-75 ms-3">
-        <h4>View All Products</h4>
+        <h4>Essential Oils Information</h4>
+        <a class="btn btn-primary" href="/products/essential-oils/create" role="button">Create New</a>
         <table class="table">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Image</th>
                     <th>Name</th>
-                    <th>Size</th>
-                    <th>Price(SGD)</th>
-                    <th>Note</th>
-                    <th>Scent</th>
-                    <th>Usage</th>
-                    <th>Benefits</th>
-                    <th>Stock</th>
+                    <th>Description</th>
+                    <th>Application</th>
+                    <th>Directions</th>
+                    <th>Beauty Benefits</th>
+                    <th>Body Benefits</th>
+                    <th>Emotional Benefits</th>
                     <th></th>
                     <th></th>
                 </tr>
 
             </thead>
             <tbody>
-                {{#each products}}
+                {{#each essentialoils}}
                 <tr>
                     <td>
                         {{this.id}}
                     </td>
                     <td>
-                        {{this.image}}
+                        {{this.name}}
                     </td>
                     <td>
-                        {{this.essentialoil.name}}
+                        {{this.description}}
                     </td>
                     <td>
-                        {{this.size.size}}
+                        {{this.application}}
                     </td>
                     <td>
-                        {{this.price}}
+                        {{this.directions}}
                     </td>
                     <td>
-                        {{this.note.name}}
+                        {{this.beauty_benefits}}
                     </td>
                     <td>
-                        {{#each this.scent}}
-                            <span class="badge bg-primary">{{this.type}}</span>
-                        {{/each}}
+                        {{this.body_benefits}}
                     </td>
                     <td>
-                        {{#each this.usage}}
-                            <span class="badge bg-primary">{{this.type}}</span>
-                        {{/each}}
+                        {{this.emotional_benefits}}
                     </td>
                     <td>
-                        {{#each this.benefit}}
-                            <span class="badge bg-primary">{{this.type}}</span>
-                        {{/each}}
+                        <a class="btn btn-primary btn-sm" href="/products/essential-oils/{{this.id}}/update">Update</a>
                     </td>
                     <td>
-                        {{this.stock}}
-                    </td>
-                    <td>
-                        <a class="btn btn-primary btn-sm" href="/products/{{this.id}}/update">Update</a>
-                    </td>
-                    <td>
-                        <a class="btn btn-danger btn-sm" href="/products/{{this.id}}/delete">Delete</a>
+                        <a class="btn btn-danger btn-sm" href="/products/essential-oils{{this.id}}/delete">Delete</a>
                     </td>
                 </tr>
                 {{/each}}

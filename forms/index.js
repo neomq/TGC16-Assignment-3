@@ -25,7 +25,7 @@ var bootstrapField = function (name, object) {
     return '<div class="form-group">' + label + widget + error + '</div>';
 };
 
-const createProductForm = (note, size, essentialOils, scent) => {
+const createProductForm = (note, size, essentialOils, scent, usages, benefits) => {
     return forms.create({
         'image': fields.string({
             required: true
@@ -78,6 +78,24 @@ const createProductForm = (note, size, essentialOils, scent) => {
             widget: widgets.multipleSelect(),
             choices: scent
         }),
+        'usage': fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.multipleSelect(),
+            choices: usages
+        }),
+        'benefit': fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.multipleSelect(),
+            choices: benefits
+        }),
         'stock': fields.string({
             required: true,
             errorAfterField: true,
@@ -89,4 +107,58 @@ const createProductForm = (note, size, essentialOils, scent) => {
     })
 };
 
-module.exports = { createProductForm, bootstrapField };
+const createEssentialoilForm = () => {
+    return forms.create({
+        'name': fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            }
+        }),
+        'description': fields.string({
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.textarea()
+        }),
+        'application': fields.string({
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.textarea()
+        }),
+        'directions': fields.string({
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.textarea()
+        }),
+        'beauty_benefits': fields.string({
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.textarea()
+        }),
+        'body_benefits': fields.string({
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.textarea()
+        }),
+        'emotional_benefits': fields.string({
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.textarea()
+        })
+    })
+};
+
+module.exports = { createProductForm, bootstrapField, createEssentialoilForm };

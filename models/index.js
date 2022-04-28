@@ -13,6 +13,19 @@ const Products = bookshelf.model('Products', {
     },
     scent() {
         return this.belongsToMany('Scent');
+    },
+    usage() {
+        return this.belongsToMany('Usage');
+    },
+    benefit() {
+        return this.belongsToMany('Benefit');
+    }
+});
+
+const Benefit = bookshelf.model('Benefit', {
+    tableName:'benefits',
+    products() {
+        return this.this.belongsToMany('Products')
     }
 });
 
@@ -44,4 +57,12 @@ const Scent = bookshelf.model('Scent', {
     }
 });
 
-module.exports = { Products, Note, Size, Essentialoils, Scent };
+const Usage = bookshelf.model('Usage', {
+    tableName:'usages',
+    products() {
+        return this.this.belongsToMany('Products')
+    }
+});
+
+
+module.exports = { Products, Note, Size, Essentialoils, Scent, Usage, Benefit };
