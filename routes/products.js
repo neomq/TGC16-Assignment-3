@@ -64,13 +64,17 @@ router.post('/create', async(req, res) => {
     const allBenefits = await Benefit.fetchAll().map( benefit => [benefit.get('id'), benefit.get('type')]);
 
     const productForm = createProductForm(allNotes, allSizes, allEssentialOils, allScents, allUsages, allBenefits);
+
+    console.log(productForm)
     
     productForm.handle(req, {
         'success': async (form) => {
             
             let {scent, usage, benefit, ...productData} = form.data;
             const product = new Products(productData);
-            
+
+            //console.log(product)
+
             await product.save();
 
             if (scent) {
@@ -82,6 +86,8 @@ router.post('/create', async(req, res) => {
             if (benefit) {
                 await product.benefit().attach(benefit.split(","));
             }
+
+            req.flash("success_messages", `New Product ${product.get('essentialOil_id')} has been created`)
 
             res.redirect('/products');
         },
@@ -210,6 +216,8 @@ router.post('/:product_id/update', async (req, res) => {
             // add in all the tags selected in the form
             await product.benefit().attach(benefitIds);
 
+            req.flash("success_messages", `Product has been updated!`)
+
             res.redirect('/products');
         },
         'error': async (form) => {
@@ -244,6 +252,9 @@ router.post('/:product_id/delete', async(req,res)=>{
         withRelated:['essentialoil']
     });
     await product.destroy();
+
+    req.flash("success_messages", `Product has been deleted!`)
+
     res.redirect('/products')
 })
 
@@ -277,6 +288,8 @@ router.post('/essential-oils/create', async(req, res) => {
             
             const essentialoil = new Essentialoils(form.data);
             await essentialoil.save();
+
+            req.flash("success_messages", `Essential oil has been created!`)
 
             res.redirect('/products/essential-oils');
         },
@@ -333,6 +346,8 @@ router.post('/essential-oils/:essentialoil_id/update', async (req, res) => {
             essentialoil.set(form.data);
             essentialoil.save();
 
+            req.flash("success_messages", `Essential oil has been updated!`)
+
             res.redirect('/products/essential-oils');
         },
         'error': async (form) => {
@@ -366,6 +381,9 @@ router.post('/essential-oils/:essentialoil_id/delete', async(req,res)=>{
         require: true
     });
     await essentialoil.destroy();
+
+    req.flash("success_messages", `Essential oil has been deleted!`)
+
     res.redirect('/products/essential-oils')
 })
 
