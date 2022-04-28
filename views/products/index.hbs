@@ -32,7 +32,7 @@
         
     {{!-- Tables --}}
     <div class="w-75 ms-3">
-        <h4>View All Products</h4>
+        <h4>All Products</h4>
         <table class="table">
             <thead>
                 <tr>
@@ -46,7 +46,7 @@
                     <th>Usage</th>
                     <th>Benefits</th>
                     <th>Stock</th>
-                    <th></th>
+                    <th>Action</th>
                     <th></th>
                 </tr>
 
@@ -58,7 +58,9 @@
                         {{this.id}}
                     </td>
                     <td>
-                        {{this.image}}
+                        {{#if this.image}}
+                            <img src="{{this.image}}" class="img-fluid" width="200" height="200"/>
+                        {{/if}}
                     </td>
                     <td>
                         {{this.essentialoil.name}}

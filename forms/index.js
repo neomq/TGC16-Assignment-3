@@ -27,9 +27,8 @@ var bootstrapField = function (name, object) {
 
 const createProductForm = (note, size, essentialOils, scent, usages, benefits) => {
     return forms.create({
-        'image': fields.string({
-            required: true
-            //widget: widgets.hidden()
+        'image':fields.string({
+            widget: widgets.hidden()
         }),
         'essentialOil_id': fields.string({
             label:'Essential Oil Name',

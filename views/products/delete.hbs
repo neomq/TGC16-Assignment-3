@@ -34,7 +34,8 @@
         <h4>Deleting {{product.essentialoil.name}}</h4>
         <form method="POST">
             <div class="alert alert-danger">
-                <p>Are you sure you want to delete {{product.essentialoil.name}}?</p>
+                <p>Are you sure you want to delete {{product.essentialoil.name}}?<br/>
+                All {{product.essentialoil.name}} Products will be lost.</p>
                 <input type="submit" class="btn btn-danger" value="Yes, Delete"/>
                 <a href="/products" class="btn btn-success">No, Cancel</a>
             </div>

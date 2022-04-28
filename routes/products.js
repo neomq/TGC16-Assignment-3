@@ -41,7 +41,10 @@ router.get('/create', async (req, res) => {
     const productForm = createProductForm(allNotes, allSizes, allEssentialOils, allScents, allUsages, allBenefits);
     
     res.render('products/create', {
-        'form': productForm.toHTML(bootstrapField)
+        'form': productForm.toHTML(bootstrapField),
+        cloudinaryName: process.env.CLOUDINARY_NAME,
+        cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+        cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
     })
 })
 // process submitted form
@@ -67,13 +70,6 @@ router.post('/create', async(req, res) => {
             
             let {scent, usage, benefit, ...productData} = form.data;
             const product = new Products(productData);
-            
-            // essentialoil.set('image', form.data.image);
-            // essentialoil.set('price', form.data.price);
-            // essentialoil.set('size', form.data.size);
-            // essentialoil.set('stock', form.data.stock);
-            // essentialoil.set('note_id', form.data.note_id);
-            // essentialoil.set('size_id', form.data.size_id);
             
             await product.save();
 
@@ -132,6 +128,9 @@ router.get('/:product_id/update', async (req, res) => {
     productForm.fields.size_id.value = product.get('size_id');
     productForm.fields.essentialOil_id.value = product.get('essentialOil_id');
 
+    // set the image in the product form
+    productForm.fields.image.value = product.get('image');
+
     // fill in the multi-select for the scents
     let selectedScents = await product.related('scent').pluck('id');
     productForm.fields.scent.value = selectedScents;
@@ -146,7 +145,11 @@ router.get('/:product_id/update', async (req, res) => {
 
     res.render('products/update', {
         'form': productForm.toHTML(bootstrapField),
-        'product': product.toJSON()
+        'product': product.toJSON(),
+        // send to the HBS file the cloudinary information
+        cloudinaryName: process.env.CLOUDINARY_NAME,
+        cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+        cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
     })
 
 })
