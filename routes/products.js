@@ -244,13 +244,11 @@ router.post('/:product_id/delete', async(req,res)=>{
     res.redirect('/products')
 })
 
-// // GET ESSENTIAL OILS
+// GET ESSENTIAL OILS
 router.get('/essential-oils', async (req, res) => {
     // fetch all the essential oils (ie, SELECT * from essentialOils)
-    let essentialoils = await Essentialoils.collection().fetch({
-        withRelated:['products']
-    });
-    // console.log(essentialoils.toJSON())
+    let essentialoils = await Essentialoils.collection().fetch();
+    console.log(essentialoils.toJSON())
     res.render('essentialoils/index', {
         'essentialoils': essentialoils.toJSON()
     })
@@ -266,8 +264,107 @@ router.get('/essential-oils/create', async (req, res) => {
         'form': essentialoilForm.toHTML(bootstrapField)
     })
 })
+// process submitted form
+router.post('/essential-oils/create', async(req, res) => {
 
+    const essentialoilForm = createEssentialoilForm();
+    
+    essentialoilForm.handle(req, {
+        'success': async (form) => {
+            
+            const essentialoil = new Essentialoils(form.data);
+            await essentialoil.save();
 
+            res.redirect('/products/essential-oils');
+        },
+        'error': async (form) => {
+            res.render('essentialoils/create', {
+                'form': form.toHTML(bootstrapField)
+            })
+        }
+    })
+})
+
+// UPDATE ESSENTIAL OILS
+router.get('/essential-oils/:essentialoil_id/update', async (req, res) => {
+    // retrieve the product
+    const essentialoilId = req.params.essentialoil_id
+    const essentialoil = await Essentialoils.where({
+        'id': essentialoilId
+    }).fetch({
+        require: true
+    });
+
+    const essentialoilForm = createEssentialoilForm();
+
+    // fill in the existing values
+    essentialoilForm.fields.name.value = essentialoil.get('name');
+    essentialoilForm.fields.description.value = essentialoil.get('description');
+    essentialoilForm.fields.application.value = essentialoil.get('application');
+    essentialoilForm.fields.directions.value = essentialoil.get('directions');
+    essentialoilForm.fields.beauty_benefits.value = essentialoil.get('beauty_benefits');
+    essentialoilForm.fields.body_benefits.value = essentialoil.get('body_benefits');
+    essentialoilForm.fields.emotional_benefits.value = essentialoil.get('emotional_benefits');
+
+    res.render('essentialoils/update', {
+        'form': essentialoilForm.toHTML(bootstrapField),
+        'essentialoil': essentialoil.toJSON()
+    })
+
+})
+// process update
+router.post('/essential-oils/:essentialoil_id/update', async (req, res) => {
+
+    // fetch the product that we want to update
+    const essentialoil = await Essentialoils.where({
+        'id': req.params.essentialoil_id
+    }).fetch({
+        require: true,
+    });
+    // process the form
+    const essentialoilForm = createEssentialoilForm();
+    
+    essentialoilForm.handle(req, {
+        'success': async (form) => {
+
+            essentialoil.set(form.data);
+            essentialoil.save();
+
+            res.redirect('/products/essential-oils');
+        },
+        'error': async (form) => {
+            res.render('products/update', {
+                'form': form.toHTML(bootstrapField),
+                'product': product.toJSON()
+            })
+        }
+    })
+})
+
+// DELETE ESSENTIAL OILS
+router.get('/essential-oils/:essentialoil_id/delete', async(req,res)=>{
+    // fetch the product that we want to delete
+    const essentialoil = await Essentialoils.where({
+        'id': req.params.essentialoil_id
+    }).fetch({
+        require: true
+    });
+
+    res.render('essentialoils/delete', {
+        'essentialoil': essentialoil.toJSON()
+    })
+});
+// process delete
+router.post('/essential-oils/:essentialoil_id/delete', async(req,res)=>{
+    // fetch the product that we want to delete
+    const essentialoil = await Essentialoils.where({
+        'id': req.params.essentialoil_id
+    }).fetch({
+        require: true
+    });
+    await essentialoil.destroy();
+    res.redirect('/products/essential-oils')
+})
 
 
 module.exports = router;

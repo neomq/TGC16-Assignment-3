@@ -1,14 +1,47 @@
 {{#extends 'base'}}
 
 {{#block 'content'}}
-<h1>Deleting {{product.essentialoil.name}}</h1>
+<div class="py-3">
+    <h2>Products</h2>
+</div>
 
-<form method="POST">
-    <div class="alert alert-danger">
-        <p>Are you sure you want to delete {{product.essentialoil.name}}?</p>
-        <input type="submit" class="btn btn-danger" value="Yes"/>
-        <a href="/products" class="btn btn-success">No</a>
+<div class="d-flex">
+    {{!-- Navigation --}}
+    <div class="p-3 bg-light">
+        <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="/products">View Products</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Search Products</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/products/create">Add Products</a>
+            </li>
+            <li>
+                <hr/>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/products/essential-oils">View Essential Oils</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/products/essential-oils/create">Add Essential Oils</a>
+            </li>
+        </ul>
     </div>
-</form>
+
+    <div class="w-75 ms-3">
+        <h4>Deleting {{product.essentialoil.name}}</h4>
+        <form method="POST">
+            <div class="alert alert-danger">
+                <p>Are you sure you want to delete {{product.essentialoil.name}}?</p>
+                <input type="submit" class="btn btn-danger" value="Yes, Delete"/>
+                <a href="/products" class="btn btn-success">No, Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 {{/block}}
 {{/extends}}

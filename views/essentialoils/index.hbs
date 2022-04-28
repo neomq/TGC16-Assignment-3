@@ -10,33 +10,29 @@
     <div class="p-3 bg-light">
         <ul class="nav nav-pills flex-column">
             <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="/products">View All</a>
+                <a class="nav-link" aria-current="page" href="/products">View Products</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Search</a>
+                <a class="nav-link" href="#">Search Products</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/products/create">Add</a>
+                <a class="nav-link" href="/products/create">Add Products</a>
             </li>
             <li>
                 <hr/>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/products/essential-oils">Essential Oils Info</a>
+                <a class="nav-link" href="/products/essential-oils">View Essential Oils</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Note</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Size</a>
+                <a class="nav-link" href="/products/essential-oils/create">Add Essential Oils</a>
             </li>
         </ul>
     </div>
         
     {{!-- Tables --}}
     <div class="w-75 ms-3">
-        <h4>Essential Oils Information</h4>
-        <a class="btn btn-primary" href="/products/essential-oils/create" role="button">Create New</a>
+        <h4>View All Essential Oils</h4>
         <table class="table">
             <thead>
                 <tr>
@@ -84,7 +80,7 @@
                         <a class="btn btn-primary btn-sm" href="/products/essential-oils/{{this.id}}/update">Update</a>
                     </td>
                     <td>
-                        <a class="btn btn-danger btn-sm" href="/products/essential-oils{{this.id}}/delete">Delete</a>
+                        <a class="btn btn-danger btn-sm" href="/products/essential-oils/{{this.id}}/delete">Delete</a>
                     </td>
                 </tr>
                 {{/each}}

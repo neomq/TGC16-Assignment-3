@@ -6,42 +6,38 @@
 </div>
 
 <div class="d-flex">
-{{!-- Navigation --}}
-<div class="w-25 p-3 bg-light">
-    <ul class="nav nav-pills flex-column">
-        <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="/products">View</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Search</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/products/create">Add</a>
-        </li>
-        <li>
-            <hr/>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Edit Essential Oils Info</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Edit Note</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Edit Size</a>
-        </li>
-    </ul>
-</div>
-    
-{{!-- Form --}}
-<div class="w-75 ms-3">
-    <h4>Update Product</h4>
-    <form method="POST">
-        {{{form}}}
-        <input type="submit" value="Update Product" class="btn btn-primary mt-3"/>
-    </form>
-</div>
-
+    {{!-- Navigation --}}
+        <div class="p-3 bg-light">
+            <ul class="nav nav-pills flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/products">View Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Search Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/products/create">Add Products</a>
+                </li>
+                <li>
+                    <hr/>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/products/essential-oils">View Essential Oils</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/products/essential-oils/create">Add Essential Oils</a>
+                </li>
+            </ul>
+        </div>
+        
+    {{!-- Form --}}
+    <div class="w-75 ms-3">
+        <h4>Update Product</h4>
+        <form method="POST">
+            {{{form}}}
+            <input type="submit" value="Update Product" class="btn btn-primary mt-3"/>
+        </form>
+    </div>
 </div>
 {{/block}}
 
