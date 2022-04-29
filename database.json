@@ -1,8 +1,8 @@
 {
-    "dev": {
-      "driver": "mysql",
-      "user": "neomq",
-      "password":"Lazyapple123",
-      "database":"essential_oils"
-    }
+  "dev": {
+    "driver": {"ENV" :"DB_DRIVER"},
+    "user": {"ENV": "DB_USER" },
+    "password": {"ENV":"DB_PASSWORD"},
+    "database": {"ENV":"DB_DATABASE"}
   }
+}
