@@ -6,6 +6,9 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const FileStore = require('session-file-store')(session);
 
+// CSURF
+const csrf = require('csurf')
+
 // create an instance of express app
 let app = express();
 
@@ -49,11 +52,30 @@ app.use(function(req,res,next){
   next();
 })
 
+// enable CSRF
+app.use(csrf());
+
+app.use(function (err, req, res, next) {
+  if (err && err.code == "EBADCSRFTOKEN") {
+      req.flash('error_messages', 'The form has expired. Please try again');
+      res.redirect('back');
+  } else {
+      next()
+  }
+});
+
+// Share CSRF with hbs files
+app.use(function(req,res,next){
+  res.locals.csrfToken = req.csrfToken();
+  next();
+})
+
 // import in routes
 const landingRoutes = require('./routes/landing');
 const productRoutes = require('./routes/products');
 const cloudinaryRoutes = require('./routes/cloudinary');
 const userRoutes = require('./routes/users');
+
 
 async function main() {
     app.use('/', landingRoutes);

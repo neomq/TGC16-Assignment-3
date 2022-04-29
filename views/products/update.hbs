@@ -36,6 +36,7 @@
             <h4>Updating {{product.essentialoil.name}}</h4>
         </div>
         <form method="POST">
+            <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
             {{!-- Upload image --}}
             <div class="py-4">
                 <div class="p-3 my-3 border">
