@@ -64,5 +64,9 @@ const Usage = bookshelf.model('Usage', {
     }
 });
 
+const User = bookshelf.model('User',{
+    tableName: 'users'
+})
 
-module.exports = { Products, Note, Size, Essentialoils, Scent, Usage, Benefit };
+
+module.exports = { Products, Note, Size, Essentialoils, Scent, Usage, Benefit, User };
