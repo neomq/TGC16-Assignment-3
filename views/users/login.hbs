@@ -1,13 +1,15 @@
 {{#extends 'base'}}
 
 {{#block 'content'}}
-<h1>Login</h1>
-<p>Please login with your account below!</p>
+<div class="container col-6 mt-4">
+    <h1>Login</h1>
+    <p>Please login with your account below!</p>
 
     <form method="POST">
     {{{form}}}
-    <input type="submit" class="btn btn-primary" value="Login"/>
+    <input type="submit" class="btn btn-primary mt-3" value="Login"/>
     </form>
+</div>
 {{/block}}
 
 {{/extends}}

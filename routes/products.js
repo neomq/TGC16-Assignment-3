@@ -7,8 +7,11 @@ const { Products, Note, Size, Essentialoils, Scent, Usage, Benefit } = require('
 // import in the Forms
 const { bootstrapField, createProductForm, createEssentialoilForm } = require('../forms');
 
+// import in the CheckIfAuthenticated middleware
+const { checkIfAuthenticated } = require('../middlewares');
+
 // GET PRODUCTS
-router.get('/', async (req, res) => {
+router.get('/', checkIfAuthenticated, async (req, res) => {
     // fetch all the essential oils (ie, SELECT * from essentialOils)
     let products = await Products.collection().fetch({
         withRelated:['note', 'size', 'essentialoil', 'scent', 'usage', 'benefit']
@@ -17,12 +20,11 @@ router.get('/', async (req, res) => {
     res.render('products/index', {
         'products': products.toJSON()
     })
-    
 })
 
 // CREATE PRODUCTS
 // render create form
-router.get('/create', async (req, res) => {
+router.get('/create', checkIfAuthenticated, async (req, res) => {
     
     const allNotes = await Note.fetchAll().map((n) => {
         return [n.get('id'), n.get('name')];
@@ -48,7 +50,7 @@ router.get('/create', async (req, res) => {
     })
 })
 // process submitted form
-router.post('/create', async(req, res) => {
+router.post('/create', checkIfAuthenticated, async(req, res) => {
 
     const allNotes = await Note.fetchAll().map((n) => {
         return [n.get('id'), n.get('name')];
@@ -100,7 +102,7 @@ router.post('/create', async(req, res) => {
 })
 
 // UPDATE PRODUCTS
-router.get('/:product_id/update', async (req, res) => {
+router.get('/:product_id/update', checkIfAuthenticated, async (req, res) => {
     // retrieve the product
     const productId = req.params.product_id
     const product = await Products.where({
@@ -160,7 +162,7 @@ router.get('/:product_id/update', async (req, res) => {
 
 })
 // process update
-router.post('/:product_id/update', async (req, res) => {
+router.post('/:product_id/update', checkIfAuthenticated, async (req, res) => {
 
     const allNotes = await Note.fetchAll().map((n) => {
         return [n.get('id'), n.get('name')];
@@ -230,7 +232,7 @@ router.post('/:product_id/update', async (req, res) => {
 })
 
 // DELETE PRODUCTS
-router.get('/:product_id/delete', async(req,res)=>{
+router.get('/:product_id/delete', checkIfAuthenticated, async(req,res)=>{
     // fetch the product that we want to delete
     const product = await Products.where({
         'id': req.params.product_id
@@ -243,7 +245,7 @@ router.get('/:product_id/delete', async(req,res)=>{
     })
 });
 // process delete
-router.post('/:product_id/delete', async(req,res)=>{
+router.post('/:product_id/delete', checkIfAuthenticated, async(req,res)=>{
     // fetch the product that we want to delete
     const product = await Products.where({
         'id': req.params.product_id
@@ -259,7 +261,7 @@ router.post('/:product_id/delete', async(req,res)=>{
 })
 
 // GET ESSENTIAL OILS
-router.get('/essential-oils', async (req, res) => {
+router.get('/essential-oils', checkIfAuthenticated, async (req, res) => {
     // fetch all the essential oils (ie, SELECT * from essentialOils)
     let essentialoils = await Essentialoils.collection().fetch();
     console.log(essentialoils.toJSON())
@@ -270,7 +272,7 @@ router.get('/essential-oils', async (req, res) => {
 
 // CREATE ESSENTIAL OILS
 // render create form
-router.get('/essential-oils/create', async (req, res) => {
+router.get('/essential-oils/create', checkIfAuthenticated, async (req, res) => {
     
     const essentialoilForm = createEssentialoilForm();
     
@@ -279,7 +281,7 @@ router.get('/essential-oils/create', async (req, res) => {
     })
 })
 // process submitted form
-router.post('/essential-oils/create', async(req, res) => {
+router.post('/essential-oils/create', checkIfAuthenticated, async(req, res) => {
 
     const essentialoilForm = createEssentialoilForm();
     
@@ -302,7 +304,7 @@ router.post('/essential-oils/create', async(req, res) => {
 })
 
 // UPDATE ESSENTIAL OILS
-router.get('/essential-oils/:essentialoil_id/update', async (req, res) => {
+router.get('/essential-oils/:essentialoil_id/update', checkIfAuthenticated, async (req, res) => {
     // retrieve the product
     const essentialoilId = req.params.essentialoil_id
     const essentialoil = await Essentialoils.where({
@@ -329,7 +331,7 @@ router.get('/essential-oils/:essentialoil_id/update', async (req, res) => {
 
 })
 // process update
-router.post('/essential-oils/:essentialoil_id/update', async (req, res) => {
+router.post('/essential-oils/:essentialoil_id/update', checkIfAuthenticated, async (req, res) => {
 
     // fetch the product that we want to update
     const essentialoil = await Essentialoils.where({
@@ -360,7 +362,7 @@ router.post('/essential-oils/:essentialoil_id/update', async (req, res) => {
 })
 
 // DELETE ESSENTIAL OILS
-router.get('/essential-oils/:essentialoil_id/delete', async(req,res)=>{
+router.get('/essential-oils/:essentialoil_id/delete', checkIfAuthenticated, async(req,res)=>{
     // fetch the product that we want to delete
     const essentialoil = await Essentialoils.where({
         'id': req.params.essentialoil_id
@@ -373,7 +375,7 @@ router.get('/essential-oils/:essentialoil_id/delete', async(req,res)=>{
     })
 });
 // process delete
-router.post('/essential-oils/:essentialoil_id/delete', async(req,res)=>{
+router.post('/essential-oils/:essentialoil_id/delete', checkIfAuthenticated, async(req,res)=>{
     // fetch the product that we want to delete
     const essentialoil = await Essentialoils.where({
         'id': req.params.essentialoil_id
