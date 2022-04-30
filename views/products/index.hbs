@@ -58,7 +58,7 @@
                     <th>Image</th>
                     <th>Name</th>
                     <th>Size</th>
-                    <th>Price(SGD)</th>
+                    <th>Price(cents)</th>
                     <th>Item Type</th>
                     <th>Scent</th>
                     <th>Usage</th>
@@ -111,10 +111,15 @@
                         {{this.stock}}
                     </td>
                     <td>
-                        <a class="btn btn-primary btn-sm" href="/products/{{this.id}}/update">Update</a>
-                    </td>
-                    <td>
-                        <a class="btn btn-danger btn-sm" href="/products/{{this.id}}/delete">Delete</a>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-gear-fill"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item btn btn-primary btn-sm" href="/products/{{this.id}}/update">Update Product</a></li>
+                                <li><a class="dropdown-item btn btn-danger btn-sm" href="/products/{{this.id}}/delete">Delete Product</a></li>
+                            </ul>
+                        </div>
                     </td>
                 </tr>
                 {{/each}}

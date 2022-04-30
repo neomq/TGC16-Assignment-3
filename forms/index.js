@@ -75,6 +75,7 @@ const createProductForm = (note, size, essentialOils, scent, usages, benefits) =
             choices: size
         }),
         'price': fields.number({
+            label:'Price (in cents)',
             required: true,
             errorAfterField: true,
             cssClasses: {

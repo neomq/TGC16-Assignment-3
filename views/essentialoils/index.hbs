@@ -73,10 +73,15 @@
                         {{this.emotional_benefits}}
                     </td>
                     <td>
-                        <a class="btn btn-primary btn-sm" href="/products/essential-oils/{{this.id}}/update">Update</a>
-                    </td>
-                    <td>
-                        <a class="btn btn-danger btn-sm" href="/products/essential-oils/{{this.id}}/delete">Delete</a>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-gear-fill"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item btn btn-primary btn-sm" href="/products/essential-oils/{{this.id}}/update">Update</a></li>
+                                <li><a class="dropdown-item btn btn-danger btn-sm" href="/products/essential-oils/{{this.id}}/delete">Delete</a></li>
+                            </ul>
+                        </div>
                     </td>
                 </tr>
                 {{/each}}
