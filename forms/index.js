@@ -51,6 +51,7 @@ var bootstrapFieldcol3 = function (name, object) {
 const createProductForm = (note, size, essentialOils, scent, usages, benefits) => {
     return forms.create({
         'image':fields.string({
+            required: true,
             widget: widgets.hidden()
         }),
         'essentialOil_id': fields.string({
@@ -73,14 +74,16 @@ const createProductForm = (note, size, essentialOils, scent, usages, benefits) =
             widget: widgets.select(),
             choices: size
         }),
-        'price': fields.string({
+        'price': fields.number({
             required: true,
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
             },
-            'validators':[validators.integer()]
+            widget: widgets.number(),
+            'validators':[validators.min(1)]
         }),
+        // Refers to item type (note table in database)
         'note_id': fields.string({
             label:'Item Type',
             required: true,
@@ -118,13 +121,14 @@ const createProductForm = (note, size, essentialOils, scent, usages, benefits) =
             widget: widgets.multipleSelect(),
             choices: benefits
         }),
-        'stock': fields.string({
+        'stock': fields.number({
             required: true,
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
             },
-            'validators':[validators.integer()]
+            widget: widgets.number(),
+            'validators':[validators.min(1)]
         })
     })
 };
@@ -136,49 +140,56 @@ const createEssentialoilForm = () => {
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
-            }
+            },
+            validators: [validators.maxlength(100)]
         }),
         'description': fields.string({
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
             },
-            widget: widgets.textarea()
+            widget: widgets.textarea(),
+            validators: [validators.maxlength(500)]
         }),
         'application': fields.string({
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
             },
-            widget: widgets.textarea()
+            widget: widgets.textarea(),
+            validators: [validators.maxlength(500)]
         }),
         'directions': fields.string({
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
             },
-            widget: widgets.textarea()
+            widget: widgets.textarea(),
+            validators: [validators.maxlength(500)]
         }),
         'beauty_benefits': fields.string({
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
             },
-            widget: widgets.textarea()
+            widget: widgets.textarea(),
+            validators: [validators.maxlength(500)]
         }),
         'body_benefits': fields.string({
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
             },
-            widget: widgets.textarea()
+            widget: widgets.textarea(),
+            validators: [validators.maxlength(500)]
         }),
         'emotional_benefits': fields.string({
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
             },
-            widget: widgets.textarea()
+            widget: widgets.textarea(),
+            validators: [validators.maxlength(500)]
         })
     })
 };
@@ -190,21 +201,24 @@ const createRegistrationForm = () => {
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
-            }
+            },
+            validators: [validators.maxlength(100)]
         }),
         'email': fields.string({
             required: true,
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
-            }
+            },
+            validators: [validators.maxlength(320)]
         }),
         'password': fields.password({
             required: true,
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
-            }
+            },
+            validators: [validators.maxlength(80)]
         }),
         'confirm_password': fields.password({
             required: true,
@@ -224,7 +238,8 @@ const createLoginForm = () => {
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
-            }
+            },
+            validators: [validators.email()]
         }),
         'password': fields.password({
             required: true,
