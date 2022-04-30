@@ -59,7 +59,7 @@ const createProductForm = (note, size, essentialOils, scent, usages, benefits) =
             'validators':[validators.integer()]
         }),
         'note_id': fields.string({
-            label:'Note',
+            label:'Item Type',
             required: true,
             errorAfterField: true,
             cssClasses: {
@@ -213,4 +213,82 @@ const createLoginForm = () => {
     })
 }
 
-module.exports = { createProductForm, bootstrapField, createLoginForm, createEssentialoilForm, createRegistrationForm };
+const createSearchForm = (essentialOils, size, note, scent, usages, benefits) => {
+    return forms.create({
+        'essentialOil_id': fields.string({
+            label: 'Essential Oil Name',
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.select(),
+            choices: essentialOils
+        }),
+        'size_id': fields.string({
+            label: 'Size',
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.select(),
+            choices: size
+        }),
+        'min_price': fields.string({
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            'validators': [validators.integer(), validators.min(0)]
+        }),
+        'max_price': fields.string({
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            'validators': [validators.integer(), validators.min(0)]
+        }),
+        'note_id': fields.string({
+            label: 'Item Type',
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.select(),
+            choices: note
+        }),
+        'scent': fields.string({
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.multipleSelect(),
+            choices: scent
+        }),
+        'usages': fields.string({
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.multipleSelect(),
+            choices: usages
+        }),
+        'benefits': fields.string({
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.multipleSelect(),
+            choices: benefits
+        })
+    })
+}
+
+module.exports = { createProductForm, bootstrapField, createLoginForm, createEssentialoilForm, createRegistrationForm, createSearchForm };

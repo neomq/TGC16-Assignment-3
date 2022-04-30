@@ -38,22 +38,22 @@
 
     <div class="w-75 ms-3">
         <div class="pb-3 border-bottom">
-            <h4>Delete Product: {{essentialoil.name}}</h4>
+            <h4>Delete: {{essentialoil.name}}</h4>
         </div>
         <form method="POST">
             <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
             <div class="py-4">
                 <p>Are you sure you want to delete {{essentialoil.name}}?</p>
-                <div class="alert alert-warning" role="alert">
+                <div class="alert alert-light border border-danger rounded-0" role="alert">
                     <div class="d-flex align-items-center pt-2">
                         <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                         <h4 class="alert-heading mb-0">Warning</h4>
                     </div>
                     <hr>
-                    <p>By deleting this, all {{essentialoil.name}} Products will be lost. This action cannot be undone</p>
+                    <p>By deleting this, you will permanently lose all {{essentialoil.name}} Products. This action cannot be undone</p>
                 </div>
                 <input type="submit" class="btn btn-danger" value="Yes, Delete"/>
-                <a href="/products" class="btn btn-success">No, Cancel</a>
+                <a href="/products/essential-oils" class="btn btn-outline-secondary">No, Keep</a>
             </div>
         </form>
     </div>

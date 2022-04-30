@@ -13,9 +13,6 @@
                 <a class="nav-link" aria-current="page" href="/products">View Products</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Search Products</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="/products/create">Add Products</a>
             </li>
             <li>
@@ -29,10 +26,22 @@
             </li>
         </ul>
     </div>
-        
-    {{!-- Tables --}}
+
+    {{!-- Table --}}
     <div class="w-75 ms-3">
-        <h4>All Products</h4>
+        <div class="pb-3 mb-3 border-bottom">
+            <h4>All Products</h4>
+        </div>
+        <h5>Filter By:</h5>
+        {{!-- Search Essential Oil --}}
+        <div>
+            <form method="GET">
+            {{{form}}}
+                <input type="submit" class="mb-3 mt-3 btn btn-primary" value="Filter"/>
+                <a href="/products" class="btn btn-outline-primary">Reset</a>
+            </form>
+        </div>
+
         <table class="table">
             <thead>
                 <tr>
@@ -41,7 +50,7 @@
                     <th>Name</th>
                     <th>Size</th>
                     <th>Price(SGD)</th>
-                    <th>Note</th>
+                    <th>Item Type</th>
                     <th>Scent</th>
                     <th>Usage</th>
                     <th>Benefits</th>
@@ -59,7 +68,7 @@
                     </td>
                     <td>
                         {{#if this.image}}
-                            <img src="{{this.image}}" class="img-fluid" width="200" height="200"/>
+                            <img src="{{this.image}}" class="img-fluid" width="150" height="150"/>
                         {{/if}}
                     </td>
                     <td>
@@ -103,7 +112,7 @@
             </tbody>
         </table>
     </div>
-        
+
 </div>
 {{/block}}
 {{/extends}}
