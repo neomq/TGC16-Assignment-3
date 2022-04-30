@@ -1,9 +1,6 @@
 {{#extends 'base'}}
 
 {{#block 'content'}}
-<div class="py-3">
-    <h2 class="display-6">Products</h2>
-</div>
 
  <div class="d-flex">
     {{!-- Navigation --}}
@@ -30,15 +27,27 @@
     {{!-- Table --}}
     <div class="w-75 ms-3">
         <div class="pb-3 mb-3 border-bottom">
-            <h4>All Products</h4>
+            <h4 class="display-6">All Products</h4>
         </div>
-        <h5>Filter By:</h5>
         {{!-- Search Essential Oil --}}
         <div>
             <form method="GET">
-            {{{form}}}
-                <input type="submit" class="mb-3 mt-3 btn btn-primary" value="Filter"/>
-                <a href="/products" class="btn btn-outline-primary">Reset</a>
+
+                <p>
+                    <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        <i class="bi bi-funnel"></i>
+                        Filter
+                    </button>
+                </p>
+                <div class="collapse" id="collapseExample">
+                    <div class="row">
+                        {{{form}}}
+                    </div>
+                    <div class="d-flex justify-content-end py-3">
+                        <button class="btn btn-primary mx-2" type="submit">Filter</button>
+                        <a class="btn btn-outline-primary" href="/products" role="button">Reset</a>
+                    </div>
+                </div>             
             </form>
         </div>
 

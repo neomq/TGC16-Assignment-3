@@ -5,7 +5,7 @@ const router = express.Router();
 const { Products, Note, Size, Essentialoils, Scent, Usage, Benefit } = require('../models');
 
 // import in the Forms
-const { bootstrapField, createProductForm, createEssentialoilForm, createSearchForm } = require('../forms');
+const { bootstrapField, bootstrapFieldcol3, createProductForm, createEssentialoilForm, createSearchForm } = require('../forms');
 
 // import in the CheckIfAuthenticated middleware
 const { checkIfAuthenticated } = require('../middlewares');
@@ -55,7 +55,7 @@ router.get('/', checkIfAuthenticated, async (req, res) => {
             //console.log(products.toJSON())
             res.render('products/index', {
                 'products': products.toJSON(),
-                'form': form.toHTML(bootstrapField)
+                'form': form.toHTML(bootstrapFieldcol3)
             })
         },
         'error': async (form) => {
@@ -64,12 +64,12 @@ router.get('/', checkIfAuthenticated, async (req, res) => {
             })
             res.render('products/index', {
                 'products': products.toJSON(),
-                'form': form.toHTML(bootstrapField)
+                'form': form.toHTML(bootstrapFieldcol3)
             })
         },
         'success': async (form) => {
             if (form.data.essentialOil_id && form.data.essentialOil_id != "0") {
-                q = q.where('essentialOil_id', 'like', '%' + req.query.essentialOil_id + '%')
+                q = q.where('essentialOil_id', 'like', req.query.essentialOil_id)
             }
             if (form.data.min_price) {
                 q = q.where('price', '>=', req.query.min_price)
@@ -78,10 +78,10 @@ router.get('/', checkIfAuthenticated, async (req, res) => {
                 q = q.where('price', '<=', req.query.max_price);
             }
             if (form.data.size_id && form.data.size_id != "0") {
-                q = q.where('size_id', 'like', '%' + req.query.size_id + '%')
+                q = q.where('size_id', 'like', req.query.size_id)
             }
             if (form.data.note_id && form.data.note_id != "0") {
-                q = q.where('note_id', 'like', '%' + req.query.note_id + '%')
+                q = q.where('note_id', 'like', req.query.note_id)
             }
             if (form.data.scent) {
                 q = q.query('join', 'products_scent', 'products.id', 'products_scent.product_id')
@@ -101,7 +101,7 @@ router.get('/', checkIfAuthenticated, async (req, res) => {
             //console.log(products.toJSON())
             res.render('products/index', {
                 'products': products.toJSON(),
-                'form': form.toHTML(bootstrapField)
+                'form': form.toHTML(bootstrapFieldcol3)
             })
         }
     })
