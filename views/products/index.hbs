@@ -2,50 +2,50 @@
 
 {{#block 'content'}}
 
- <div class="d-flex">
+ <div class="row m-0">
     {{!-- Navigation --}}
-    <div class="pe-3">
-        <ul class="nav nav-pills flex-column">
+    <div class="row m-0 col-2 px-4 pt-4 border-end">
+        <ul class="nav nav-pills flex-column p-0">
             <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="/products">View Products</a>
+                <a class="nav-link px-2" aria-current="page" href="/products">View Products</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/products/create">Add Products</a>
-            </li>
-            <li>
-                <hr/>
+                <a class="nav-link px-2" href="/products/create">Add Products</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/products/essential-oils">View Essential Oils</a>
+                <a class="nav-link px-2" href="/products/essential-oils">View Essential Oils</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/products/essential-oils/create">Add Essential Oils</a>
+                <a class="nav-link px-2" href="/products/essential-oils/create">Add Essential Oils</a>
             </li>
         </ul>
     </div>
 
     {{!-- Table --}}
-    <div class="w-75 ms-3">
-        <div class="pb-3 mb-3 border-bottom">
+    <div class="row col-10 m-0 px-4 pt-4">
+        <div class="d-flex justify-content-between pb-3 mb-3 border-bottom">
             <h4 class="display-6">All Products</h4>
+            <div class="d-flex align-items-center">
+                <a class="btn btn-primary" href="/products/create" role="button"><i class="bi bi-plus"></i>Add New</a>
+            </div>
         </div>
         {{!-- Search Essential Oil --}}
         <div>
             <form method="GET">
 
-                <p>
+                <div class="py-3">
                     <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                         <i class="bi bi-funnel"></i>
                         Filter
                     </button>
-                </p>
-                <div class="collapse" id="collapseExample">
+                    <a class="btn btn-link" href="/products" role="button">Reset</a>
+                </div>
+                <div class="collapse pt-2 pb-3" id="collapseExample">
                     <div class="row">
                         {{{form}}}
                     </div>
                     <div class="d-flex justify-content-end py-3">
-                        <button class="btn btn-primary mx-2" type="submit">Filter</button>
-                        <a class="btn btn-outline-primary" href="/products" role="button">Reset</a>
+                        <button class="btn btn-primary mx-2" type="submit">Apply Filter</button>
                     </div>
                 </div>             
             </form>
@@ -73,7 +73,7 @@
                 {{#each products}}
                 <tr>
                     <td>
-                        {{this.id}}
+                        #{{this.id}}
                     </td>
                     <td>
                         {{#if this.image}}
@@ -126,7 +126,6 @@
             </tbody>
         </table>
     </div>
-
 </div>
 {{/block}}
 {{/extends}}
