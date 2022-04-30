@@ -27,7 +27,8 @@ router.post('/register', (req, res) => {
             const user = new User({
                 'name': form.data.name,
                 'password': getHashedPassword(form.data.password),
-                'email': form.data.email
+                'email': form.data.email,
+                'role': 'administrator'
             });
             await user.save();
             req.flash("success_messages", "User signed up successfully!");

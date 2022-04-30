@@ -22,13 +22,6 @@ const Products = bookshelf.model('Products', {
     }
 });
 
-const Benefit = bookshelf.model('Benefit', {
-    tableName:'benefits',
-    products() {
-        return this.this.belongsToMany('Products')
-    }
-});
-
 const Note = bookshelf.model('Note', {
     tableName:'note',
     products() {
@@ -57,6 +50,13 @@ const Scent = bookshelf.model('Scent', {
     }
 });
 
+const Benefit = bookshelf.model('Benefit', {
+    tableName:'benefits',
+    products() {
+        return this.this.belongsToMany('Products')
+    }
+});
+
 const Usage = bookshelf.model('Usage', {
     tableName:'usages',
     products() {
@@ -68,5 +68,12 @@ const User = bookshelf.model('User',{
     tableName: 'users'
 })
 
+const CartItem = bookshelf.model('CartItem', {
+    tableName: 'cartItems',
+    products() {
+        return this.belongsTo('Products')
+    }
+})
 
-module.exports = { Products, Note, Size, Essentialoils, Scent, Usage, Benefit, User };
+
+module.exports = { Products, Note, Size, Essentialoils, Scent, Usage, Benefit, User, CartItem };

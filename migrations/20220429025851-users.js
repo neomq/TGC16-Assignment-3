@@ -18,6 +18,7 @@ exports.up = function (db) {
   return db.createTable('users', {
     id: {
       type: 'int',
+      unsigned: true,
       primaryKey: true,
       autoIncrement: true
     },

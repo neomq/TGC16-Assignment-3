@@ -48,8 +48,6 @@ var bootstrapFieldcol3 = function (name, object) {
     return '<div class="form-group col col-3">' + label + widget + error + '</div>';
 };
 
-
-
 const createProductForm = (note, size, essentialOils, scent, usages, benefits) => {
     return forms.create({
         'image':fields.string({
