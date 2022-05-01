@@ -48,6 +48,10 @@ const getEssentialOilByID = async (essentialoilId) => {
     })
 }
 
+const getAllProducts = async () => {
+    return await Products.fetchAll();
+}
+
 module.exports = {
     allNotes,
     allSizes,
@@ -56,5 +60,6 @@ module.exports = {
     allUsages,
     allBenefits,
     getProductByID,
-    getEssentialOilByID
+    getEssentialOilByID,
+    getAllProducts
 }
