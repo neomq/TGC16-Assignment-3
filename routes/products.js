@@ -5,7 +5,7 @@ const router = express.Router();
 const { Products, Note, Size, Essentialoils, Scent, Usage, Benefit } = require('../models');
 
 // import in the Forms
-const { bootstrapField, bootstrapFieldcol3, createProductForm, createEssentialoilForm, createSearchForm } = require('../forms');
+const { bootstrapField, bootstrapFieldcol3, createProductForm, createEssentialoilForm, createSearchProductForm } = require('../forms');
 
 // import in the CheckIfAuthenticated middleware
 const { checkIfAuthenticated } = require('../middlewares');
@@ -44,65 +44,65 @@ router.get('/', checkIfAuthenticated, async (req, res) => {
     const allBenefits = await Benefit.fetchAll().map(benefit => [benefit.get('id'), benefit.get('type')]);
  
    // Create search form
-   let searchEssentialOil = createSearchForm(allEssentialOils, allSizes, allNotes, allScents, allUsages, allBenefits);
+   let searchProduct = createSearchProductForm(allEssentialOils, allSizes, allNotes, allScents, allUsages, allBenefits);
    let q = Products.collection();
 
-    searchEssentialOil.handle(req, {
-        'empty': async (form) => {
-            let products = await q.fetch({
-                withRelated:['note', 'essentialoil', 'scent', 'usage', 'benefit', 'size']
-            })
-            //console.log(products.toJSON())
-            res.render('products/index', {
-                'products': products.toJSON(),
-                'form': form.toHTML(bootstrapFieldcol3)
-            })
-        },
-        'error': async (form) => {
-            let products = await q.fetch({
-                withRelated:['note', 'essentialoil', 'scent', 'usage', 'benefit', 'size']
-            })
-            res.render('products/index', {
-                'products': products.toJSON(),
-                'form': form.toHTML(bootstrapFieldcol3)
-            })
-        },
-        'success': async (form) => {
-            if (form.data.essentialOil_id && form.data.essentialOil_id != "0") {
-                q = q.where('essentialOil_id', 'like', req.query.essentialOil_id)
-            }
-            if (form.data.min_price) {
-                q = q.where('price', '>=', req.query.min_price)
-            }
-            if (form.data.max_price) {
-                q = q.where('price', '<=', req.query.max_price);
-            }
-            if (form.data.size_id && form.data.size_id != "0") {
-                q = q.where('size_id', 'like', req.query.size_id)
-            }
-            if (form.data.note_id && form.data.note_id != "0") {
-                q = q.where('note_id', 'like', req.query.note_id)
-            }
-            if (form.data.scent) {
-                q = q.query('join', 'products_scent', 'products.id', 'products_scent.product_id')
-                .where('scent_id', 'in', form.data.scent.split(','))
-            }
-            if (form.data.usages) {
-                q = q.query('join', 'products_usages', 'products.id', 'products_usages.product_id')
-                .where('usage_id', 'in', form.data.usages.split(','))
-            }
-            if (form.data.benefits) {
-                q = q.query('join', 'benefits_products', 'products.id', 'benefits_products.product_id')
-                .where('benefit_id', 'in', form.data.benefits.split(','))
-            }
-            let products = await q.fetch({
-                withRelated:['note', 'essentialoil', 'scent', 'usage', 'benefit', 'size']
-            })
-            //console.log(products.toJSON())
-            res.render('products/index', {
-                'products': products.toJSON(),
-                'form': form.toHTML(bootstrapFieldcol3)
-            })
+   searchProduct.handle(req, {
+       'empty': async (form) => {
+           let products = await q.fetch({
+               withRelated: ['note', 'essentialoil', 'scent', 'usage', 'benefit', 'size']
+           })
+           //console.log(products.toJSON())
+           res.render('products/index', {
+               'products': products.toJSON(),
+               'form': form.toHTML(bootstrapFieldcol3)
+           })
+       },
+       'error': async (form) => {
+           let products = await q.fetch({
+               withRelated: ['note', 'essentialoil', 'scent', 'usage', 'benefit', 'size']
+           })
+           res.render('products/index', {
+               'products': products.toJSON(),
+               'form': form.toHTML(bootstrapFieldcol3)
+           })
+       },
+       'success': async (form) => {
+           if (form.data.essentialOil_id && form.data.essentialOil_id != "0") {
+               q = q.where('essentialOil_id', 'like', req.query.essentialOil_id)
+           }
+           if (form.data.min_price) {
+               q = q.where('price', '>=', req.query.min_price)
+           }
+           if (form.data.max_price) {
+               q = q.where('price', '<=', req.query.max_price);
+           }
+           if (form.data.size_id && form.data.size_id != "0") {
+               q = q.where('size_id', 'like', req.query.size_id)
+           }
+           if (form.data.note_id && form.data.note_id != "0") {
+               q = q.where('note_id', 'like', req.query.note_id)
+           }
+           if (form.data.scent) {
+               q = q.query('join', 'products_scent', 'products.id', 'products_scent.product_id')
+                   .where('scent_id', 'in', form.data.scent.split(','))
+           }
+           if (form.data.usages) {
+               q = q.query('join', 'products_usages', 'products.id', 'products_usages.product_id')
+                   .where('usage_id', 'in', form.data.usages.split(','))
+           }
+           if (form.data.benefits) {
+               q = q.query('join', 'benefits_products', 'products.id', 'benefits_products.product_id')
+                   .where('benefit_id', 'in', form.data.benefits.split(','))
+           }
+           let products = await q.fetch({
+               withRelated: ['note', 'essentialoil', 'scent', 'usage', 'benefit', 'size']
+           })
+           //console.log(products.toJSON())
+           res.render('products/index', {
+               'products': products.toJSON(),
+               'form': form.toHTML(bootstrapFieldcol3)
+           })
         }
     })
 })
@@ -159,9 +159,7 @@ router.post('/create', checkIfAuthenticated, async(req, res) => {
             
             let {scent, usage, benefit, ...productData} = form.data;
             const product = new Products(productData);
-
             //console.log(product)
-
             await product.save();
 
             if (scent) {
@@ -174,8 +172,7 @@ router.post('/create', checkIfAuthenticated, async(req, res) => {
                 await product.benefit().attach(benefit.split(","));
             }
 
-            req.flash("success_messages", `New Product ${product.get('essentialOil_id')} has been created`)
-
+            req.flash("success_messages", `New Product has been created`)
             res.redirect('/products');
         },
         'error': async (form) => {

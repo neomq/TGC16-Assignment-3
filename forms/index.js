@@ -252,7 +252,7 @@ const createLoginForm = () => {
     })
 }
 
-const createSearchForm = (essentialOils, size, note, scent, usages, benefits) => {
+const createSearchProductForm = (essentialOils, size, note, scent, usages, benefits) => {
     return forms.create({
         'essentialOil_id': fields.string({
             label: 'Essential Oil Name',
@@ -330,4 +330,12 @@ const createSearchForm = (essentialOils, size, note, scent, usages, benefits) =>
     })
 }
 
-module.exports = { createProductForm, bootstrapField, bootstrapFieldcol3, createLoginForm, createEssentialoilForm, createRegistrationForm, createSearchForm };
+module.exports = {
+    createProductForm, // Create new product
+    bootstrapField,
+    bootstrapFieldcol3, // Custom form field for product filter
+    createLoginForm, // User Login 
+    createEssentialoilForm, // Create new essential oil
+    createRegistrationForm, // User Registration
+    createSearchProductForm
+};
