@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 // import in the Product model
-const { Products, Note, Size, Essentialoils, Scent, Usage, Benefit } = require('../models');
+const { Products, Essentialoils } = require('../models');
 
 // import in the Forms
 const { bootstrapField, bootstrapFieldcol3, createProductForm, createEssentialoilForm, createSearchProductForm } = require('../forms');
@@ -10,42 +10,27 @@ const { bootstrapField, bootstrapFieldcol3, createProductForm, createEssentialoi
 // import in the CheckIfAuthenticated middleware
 const { checkIfAuthenticated } = require('../middlewares');
 
-// GET PRODUCTS
-// router.get('/', checkIfAuthenticated, async (req, res) => {
-//     // fetch all the essential oils (ie, SELECT * from essentialOils)
-//     let products = await Products.collection().fetch({
-//         withRelated:['note', 'size', 'essentialoil', 'scent', 'usage', 'benefit']
-//     });
-//     console.log(products.toJSON())
-//     res.render('products/index', {
-//         'products': products.toJSON()
-//     })
-// })
+// import in the DAL
+const dataLayer = require('../dal/products')
 
+// GET ALL PRODUCTS
 router.get('/', checkIfAuthenticated, async (req, res) => {
     
-    const allNotes = await Note.fetchAll().map((n) => {
-        return [n.get('id'), n.get('name')];
-    })
-    allNotes.unshift([0, '---']);
+    const allNotes = await dataLayer.allNotes();
+    const allSizes = await dataLayer.allSizes();
+    const allEssentialOils = await dataLayer.allEssentialOils();
+    const allScents = await dataLayer.allScents();
+    const allUsages = await dataLayer.allUsages();
+    const allBenefits = await dataLayer.allBenefits();
 
-    const allSizes = await Size.fetchAll().map((s) => {
-        return [s.get('id'), s.get('size')];
-    })
-    allSizes.unshift([0, '---']);
-
-    const allEssentialOils = await Essentialoils.fetchAll().map((e) => {
-        return [e.get('id'), e.get('name')];
-    })
-    allEssentialOils.unshift([0, '---']);
-
-    const allScents = await Scent.fetchAll().map(scent => [scent.get('id'), scent.get('type')]);
-    const allUsages = await Usage.fetchAll().map(usage => [usage.get('id'), usage.get('type')]);
-    const allBenefits = await Benefit.fetchAll().map(benefit => [benefit.get('id'), benefit.get('type')]);
- 
-   // Create search form
+    // Create Product Search
    let searchProduct = createSearchProductForm(allEssentialOils, allSizes, allNotes, allScents, allUsages, allBenefits);
    let q = Products.collection();
+
+   // Add empty option to select field
+   allNotes.unshift([0, '---']);
+   allSizes.unshift([0, '---']);
+   allEssentialOils.unshift([0, '---']);
 
    searchProduct.handle(req, {
        'empty': async (form) => {
@@ -103,27 +88,21 @@ router.get('/', checkIfAuthenticated, async (req, res) => {
                'products': products.toJSON(),
                'form': form.toHTML(bootstrapFieldcol3)
            })
-        }
-    })
+       }
+   })
+
 })
 
 // CREATE PRODUCTS
 // render create form
 router.get('/create', checkIfAuthenticated, async (req, res) => {
     
-    const allNotes = await Note.fetchAll().map((n) => {
-        return [n.get('id'), n.get('name')];
-    })
-    const allSizes = await Size.fetchAll().map((s) => {
-        return [s.get('id'), s.get('size')];
-    })
-    const allEssentialOils = await Essentialoils.fetchAll().map((e) => {
-        return [e.get('id'), e.get('name')];
-    })
-    
-    const allScents = await Scent.fetchAll().map( scent => [scent.get('id'), scent.get('type')]);
-    const allUsages = await Usage.fetchAll().map( usage => [usage.get('id'), usage.get('type')]);
-    const allBenefits = await Benefit.fetchAll().map( benefit => [benefit.get('id'), benefit.get('type')]);
+    const allNotes = await dataLayer.allNotes();
+    const allSizes = await dataLayer.allSizes();
+    const allEssentialOils = await dataLayer.allEssentialOils();
+    const allScents = await dataLayer.allScents();
+    const allUsages = await dataLayer.allUsages();
+    const allBenefits = await dataLayer.allBenefits();
 
     const productForm = createProductForm(allNotes, allSizes, allEssentialOils, allScents, allUsages, allBenefits);
     
@@ -137,21 +116,14 @@ router.get('/create', checkIfAuthenticated, async (req, res) => {
 // process submitted form
 router.post('/create', checkIfAuthenticated, async(req, res) => {
 
-    const allNotes = await Note.fetchAll().map((n) => {
-        return [n.get('id'), n.get('name')];
-    })
-    const allSizes = await Size.fetchAll().map((s) => {
-        return [s.get('id'), s.get('size')];
-    })
-    const allEssentialOils = await Essentialoils.fetchAll().map((e) => {
-        return [e.get('id'), e.get('name')];
-    })
-    const allScents = await Scent.fetchAll().map( scent => [scent.get('id'), scent.get('type')]);
-    const allUsages = await Usage.fetchAll().map( usage => [usage.get('id'), usage.get('type')]);
-    const allBenefits = await Benefit.fetchAll().map( benefit => [benefit.get('id'), benefit.get('type')]);
+    const allNotes = await dataLayer.allNotes();
+    const allSizes = await dataLayer.allSizes();
+    const allEssentialOils = await dataLayer.allEssentialOils();
+    const allScents = await dataLayer.allScents();
+    const allUsages = await dataLayer.allUsages();
+    const allBenefits = await dataLayer.allBenefits();
 
     const productForm = createProductForm(allNotes, allSizes, allEssentialOils, allScents, allUsages, allBenefits);
-
     console.log(productForm)
     
     productForm.handle(req, {
@@ -187,33 +159,20 @@ router.post('/create', checkIfAuthenticated, async(req, res) => {
 router.get('/:product_id/update', checkIfAuthenticated, async (req, res) => {
     // retrieve the product
     const productId = req.params.product_id
-    const product = await Products.where({
-        'id': productId
-    }).fetch({
-        require: true,
-        withRelated:['essentialoil', 'scent', 'usage', 'benefit']
-    });
+    const product = await dataLayer.getProductByID(productId);
 
-    const allNotes = await Note.fetchAll().map((n) => {
-        return [n.get('id'), n.get('name')];
-    })
-    const allSizes = await Size.fetchAll().map((s) => {
-        return [s.get('id'), s.get('size')];
-    })
-    const allEssentialOils = await Essentialoils.fetchAll().map((e) => {
-        return [e.get('id'), e.get('name')];
-    })
-
-    const allScents = await Scent.fetchAll().map( scent => [scent.get('id'), scent.get('type')]);
-    const allUsages = await Usage.fetchAll().map( usage => [usage.get('id'), usage.get('type')]);
-    const allBenefits = await Benefit.fetchAll().map( benefit => [benefit.get('id'), benefit.get('type')]);
+    const allNotes = await dataLayer.allNotes();
+    const allSizes = await dataLayer.allSizes();
+    const allEssentialOils = await dataLayer.allEssentialOils();
+    const allScents = await dataLayer.allScents();
+    const allUsages = await dataLayer.allUsages();
+    const allBenefits = await dataLayer.allBenefits();
 
     const productForm = createProductForm(allNotes, allSizes, allEssentialOils, allScents, allUsages, allBenefits);
 
     // fill in the existing values
     productForm.fields.price.value = product.get('price');
     productForm.fields.stock.value = product.get('stock');
-
     productForm.fields.note_id.value = product.get('note_id');
     productForm.fields.size_id.value = product.get('size_id');
     productForm.fields.essentialOil_id.value = product.get('essentialOil_id');
@@ -245,28 +204,17 @@ router.get('/:product_id/update', checkIfAuthenticated, async (req, res) => {
 })
 // process update
 router.post('/:product_id/update', checkIfAuthenticated, async (req, res) => {
-
-    const allNotes = await Note.fetchAll().map((n) => {
-        return [n.get('id'), n.get('name')];
-    })
-    const allSizes = await Size.fetchAll().map((s) => {
-        return [s.get('id'), s.get('size')];
-    })
-    const allEssentialOils = await Essentialoils.fetchAll().map((e) => {
-        return [e.get('id'), e.get('name')];
-    })
-
-    const allScents = await Scent.fetchAll().map( scent => [scent.get('id'), scent.get('type')]);
-    const allUsages = await Usage.fetchAll().map( usage => [usage.get('id'), usage.get('type')]);
-    const allBenefits = await Benefit.fetchAll().map( benefit => [benefit.get('id'), benefit.get('type')]);
-
+    
     // fetch the product that we want to update
-    const product = await Products.where({
-        'id': req.params.product_id
-    }).fetch({
-        require: true,
-        withRelated:['essentialoil', 'scent', 'usage', 'benefit']
-    });
+    const productId = req.params.product_id
+    const product = await dataLayer.getProductByID(productId);
+
+    const allNotes = await dataLayer.allNotes();
+    const allSizes = await dataLayer.allSizes();
+    const allEssentialOils = await dataLayer.allEssentialOils();
+    const allScents = await dataLayer.allScents();
+    const allUsages = await dataLayer.allUsages();
+    const allBenefits = await dataLayer.allBenefits();
 
     // process the form
     const productForm = createProductForm(allNotes, allSizes, allEssentialOils, allScents, allUsages, allBenefits);
@@ -315,13 +263,11 @@ router.post('/:product_id/update', checkIfAuthenticated, async (req, res) => {
 
 // DELETE PRODUCTS
 router.get('/:product_id/delete', checkIfAuthenticated, async(req,res)=>{
+    
     // fetch the product that we want to delete
-    const product = await Products.where({
-        'id': req.params.product_id
-    }).fetch({
-        require: true,
-        withRelated:['essentialoil', 'size', 'note']
-    });
+    const productId = req.params.product_id
+    const product = await dataLayer.getProductByID(productId);
+
     console.log(product.toJSON())
     res.render('products/delete', {
         'product': product.toJSON()
@@ -329,21 +275,18 @@ router.get('/:product_id/delete', checkIfAuthenticated, async(req,res)=>{
 });
 // process delete
 router.post('/:product_id/delete', checkIfAuthenticated, async(req,res)=>{
+    
     // fetch the product that we want to delete
-    const product = await Products.where({
-        'id': req.params.product_id
-    }).fetch({
-        require: true,
-        withRelated:['essentialoil']
-    });
+    const productId = req.params.product_id
+    const product = await dataLayer.getProductByID(productId);
+    
     await product.destroy();
 
     req.flash("success_messages", `Product has been deleted!`)
-
     res.redirect('/products')
 })
 
-// GET ESSENTIAL OILS
+// GET ALL ESSENTIAL OILS
 router.get('/essential-oils', checkIfAuthenticated, async (req, res) => {
     // fetch all the essential oils (ie, SELECT * from essentialOils)
     let essentialoils = await Essentialoils.collection().fetch();
@@ -363,7 +306,7 @@ router.get('/essential-oils/create', checkIfAuthenticated, async (req, res) => {
         'form': essentialoilForm.toHTML(bootstrapField)
     })
 })
-// process submitted form
+// process create
 router.post('/essential-oils/create', checkIfAuthenticated, async(req, res) => {
 
     const essentialoilForm = createEssentialoilForm();
@@ -390,11 +333,7 @@ router.post('/essential-oils/create', checkIfAuthenticated, async(req, res) => {
 router.get('/essential-oils/:essentialoil_id/update', checkIfAuthenticated, async (req, res) => {
     // retrieve the product
     const essentialoilId = req.params.essentialoil_id
-    const essentialoil = await Essentialoils.where({
-        'id': essentialoilId
-    }).fetch({
-        require: true
-    });
+    const essentialoil = await dataLayer.getEssentialOilByID(essentialoilId);
 
     const essentialoilForm = createEssentialoilForm();
 
@@ -417,11 +356,9 @@ router.get('/essential-oils/:essentialoil_id/update', checkIfAuthenticated, asyn
 router.post('/essential-oils/:essentialoil_id/update', checkIfAuthenticated, async (req, res) => {
 
     // fetch the product that we want to update
-    const essentialoil = await Essentialoils.where({
-        'id': req.params.essentialoil_id
-    }).fetch({
-        require: true,
-    });
+    const essentialoilId = req.params.essentialoil_id
+    const essentialoil = await dataLayer.getEssentialOilByID(essentialoilId);
+    
     // process the form
     const essentialoilForm = createEssentialoilForm();
     
@@ -446,12 +383,10 @@ router.post('/essential-oils/:essentialoil_id/update', checkIfAuthenticated, asy
 
 // DELETE ESSENTIAL OILS
 router.get('/essential-oils/:essentialoil_id/delete', checkIfAuthenticated, async(req,res)=>{
+    
     // fetch the product that we want to delete
-    const essentialoil = await Essentialoils.where({
-        'id': req.params.essentialoil_id
-    }).fetch({
-        require: true
-    });
+    const essentialoilId = req.params.essentialoil_id
+    const essentialoil = await dataLayer.getEssentialOilByID(essentialoilId);
 
     res.render('essentialoils/delete', {
         'essentialoil': essentialoil.toJSON()
@@ -459,12 +394,11 @@ router.get('/essential-oils/:essentialoil_id/delete', checkIfAuthenticated, asyn
 });
 // process delete
 router.post('/essential-oils/:essentialoil_id/delete', checkIfAuthenticated, async(req,res)=>{
+    
     // fetch the product that we want to delete
-    const essentialoil = await Essentialoils.where({
-        'id': req.params.essentialoil_id
-    }).fetch({
-        require: true
-    });
+    const essentialoilId = req.params.essentialoil_id
+    const essentialoil = await dataLayer.getEssentialOilByID(essentialoilId);
+
     await essentialoil.destroy();
 
     req.flash("success_messages", `Essential oil has been deleted!`)

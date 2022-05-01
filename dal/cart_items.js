@@ -12,7 +12,7 @@ async function getCart(userId) {
         });
 }
 
-/* check whether the user has added an item to the cart */
+// check whether the user has added an item to the cart
 async function getCartItemByUserAndProduct(userId, productId) {
     return await CartItem.where({
         'user_id': userId,
@@ -22,7 +22,7 @@ async function getCartItemByUserAndProduct(userId, productId) {
     })
 }
 
-// /* add a cart item */
+// add a cart item
 async function createCartItem(userId, productId, quantity) {
     // an instance of a model represents one row in the table
     // so to create a new row, simply create a new instance
@@ -37,15 +37,15 @@ async function createCartItem(userId, productId, quantity) {
     return cartItem;
 }
 
+// update quantity of cart item
 async function updateCartItemQuantity(userId, productId, quantity) {
     let cartItem = await getCartItemByUserAndProduct(userId, productId);
-    
     cartItem.set('item_quantity', quantity);
-    
     await cartItem.save();
     return cartItem;
 }
 
+// remove an item from cart
 async function removeFromCart(userId, productId) {
     let cartItem = await getCartItemByUserAndProduct(userId, productId);
     await cartItem.destroy();
