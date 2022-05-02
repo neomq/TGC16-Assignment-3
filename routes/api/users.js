@@ -6,13 +6,15 @@ const {checkIfAuthenticatedJWT} = require('../../middlewares');
 const { User } = require('../../models');
 
 const generateAccessToken = (user) => {
-    return jwt.sign({
-        'username': user.get('username'),
+    const jwtAccessToken = jwt.sign({
         'id': user.get('id'),
+        'name': user.get('name'),
         'email': user.get('email')
     }, process.env.TOKEN_SECRET, {
         expiresIn: "1h"
     });
+    console.log(jwtAccessToken)
+    return jwtAccessToken
 }
 
 const getHashedPassword = (password) => {
@@ -41,9 +43,10 @@ router.post('/login', async (req, res) => {
 })
 
 
-router.get('/profile', checkIfAuthenticatedJWT, async(req,res)=>{
-    const user = req.user;
-    res.send(user);
+router.get('/profile', checkIfAuthenticatedJWT, function(req,res) {
+    res.send({
+        'message':"Welcome" + req.user.name
+    })
 })
 
 module.exports = router;
