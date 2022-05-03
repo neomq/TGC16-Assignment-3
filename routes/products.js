@@ -37,7 +37,7 @@ router.get('/', checkIfAuthenticated, async (req, res) => {
            let products = await q.fetch({
                withRelated: ['note', 'essentialoil', 'scent', 'usage', 'benefit', 'size']
            })
-           //console.log(products.toJSON())
+           console.log(products.toJSON())
            res.render('products/index', {
                'products': products.toJSON(),
                'form': form.toHTML(bootstrapFieldcol3)
