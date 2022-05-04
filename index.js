@@ -5,6 +5,7 @@ require("dotenv").config();
 const session = require('express-session');
 const flash = require('connect-flash');
 const FileStore = require('session-file-store')(session);
+const cors = require('cors')
 
 // CSURF
 const csrf = require('csurf')
@@ -28,6 +29,8 @@ app.use(
     extended: false
   })
 );
+
+app.use(cors());
 
 // set up sessions
 app.use(session({
@@ -112,7 +115,7 @@ async function main() {
     app.use('/api/products', express.json(), api.products); 
     app.use('/api/users', express.json(), api.users);
     app.use('/api/cart', express.json(), api.shoppingcart);
-    app.use('/api/checkout', express.json(), api.checkout);
+    app.use('/api/checkout', api.checkout);
 }
 
 main();

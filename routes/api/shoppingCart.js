@@ -52,7 +52,7 @@ router.get('/:user_id/remove/:product_id', async function(req,res){
         res.status(500)
         res.send("Unable to remove cart item")
     }
-})
+});
 
 module.exports = router; 
 
