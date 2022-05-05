@@ -65,7 +65,10 @@ const Usage = bookshelf.model('Usage', {
 });
 
 const User = bookshelf.model('User',{
-    tableName: 'users'
+    tableName: 'users',
+    orders() {
+        return this.hasMany('Orders');
+    }
 })
 
 const CartItem = bookshelf.model('CartItem', {
@@ -76,8 +79,36 @@ const CartItem = bookshelf.model('CartItem', {
 })
 
 const Orderstatus = bookshelf.model('Orderstatus',{
-    tableName: 'order_status'
+    tableName: 'order_status',
+    orders() {
+        return this.hasMany('Orders');
+    }
+
 })
+
+const Orders = bookshelf.model('Orders',{
+    tableName: 'orders',
+    orderstatus() {
+        return this.belongsTo('Orderstatus')
+    },
+    user() {
+        return this.belongsTo('User')
+    },
+    orderdetails() {
+        return this.hasMany('Orderdetails');
+    }
+})
+
+const Orderdetails = bookshelf.model('Orderdetails',{
+    tableName: 'order_details',
+    products() {
+        return this.belongsTo('Products')
+    },
+    orders() {
+        return this.belongsTo('Orders')
+    }
+})
+
 
 module.exports = {
                     Products,
@@ -89,5 +120,7 @@ module.exports = {
                     Benefit, 
                     User, 
                     CartItem,
-                    Orderstatus
+                    Orderstatus,
+                    Orders,
+                    Orderdetails
                 };
