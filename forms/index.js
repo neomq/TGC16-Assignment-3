@@ -48,7 +48,7 @@ var bootstrapFieldcol3 = function (name, object) {
     return '<div class="form-group col col-3">' + label + widget + error + '</div>';
 };
 
-const createProductForm = (note, size, essentialOils, scent, usages, benefits) => {
+const createProductForm = (itemtype, size, essentialOils, scent, usages, benefits) => {
     return forms.create({
         'image':fields.string({
             required: true,
@@ -84,8 +84,7 @@ const createProductForm = (note, size, essentialOils, scent, usages, benefits) =
             widget: widgets.number(),
             'validators':[validators.min(1)]
         }),
-        // Refers to item type (note table in database)
-        'note_id': fields.string({
+        'item_type_id': fields.string({
             label:'Item Type',
             required: true,
             errorAfterField: true,
@@ -93,7 +92,7 @@ const createProductForm = (note, size, essentialOils, scent, usages, benefits) =
                 label: ['form-label']
             },
             widget: widgets.select(),
-            choices: note
+            choices: itemtype
         }),
         'scent': fields.string({
             required: true,
@@ -252,7 +251,7 @@ const createLoginForm = () => {
     })
 }
 
-const createSearchProductForm = (essentialOils, size, note, scent, usages, benefits) => {
+const createSearchProductForm = (essentialOils, size, itemtype, scent, usages, benefits) => {
     return forms.create({
         'essentialOil_id': fields.string({
             label: 'Essential Oil Name',
@@ -290,7 +289,7 @@ const createSearchProductForm = (essentialOils, size, note, scent, usages, benef
             },
             'validators': [validators.integer(), validators.min(0)]
         }),
-        'note_id': fields.string({
+        'item_type_id': fields.string({
             label: 'Item Type',
             required: false,
             errorAfterField: true,
@@ -298,7 +297,7 @@ const createSearchProductForm = (essentialOils, size, note, scent, usages, benef
                 label: ['form-label']
             },
             widget: widgets.select(),
-            choices: note
+            choices: itemtype
         }),
         'scent': fields.string({
             required: false,

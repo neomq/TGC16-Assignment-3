@@ -14,8 +14,8 @@ exports.setup = function(options, seedLink) {
   seed = seedLink;
 };
 
-exports.up = function (db) {
-  return db.createTable('note', {
+exports.up = function(db) {
+  return db.createTable('essentialoils', {
     id: {
       type: 'int',
       unsigned: true,
@@ -24,18 +24,20 @@ exports.up = function (db) {
     },
     name: {
       type: 'string',
-      length: 50,
+      length: 100,
       notNull: true
     },
-    description: {
-      type: 'string',
-      length: 500
-    }
+    description: { type: 'text' },
+    application: { type: 'text' },
+    directions: { type: 'text' },
+    beauty_benefits: { type: 'text' },
+    body_benefits: { type: 'text' },
+    emotional_benefits: { type: 'text' }
   })
 };
 
 exports.down = function(db) {
-  return db.dropTable('note');
+  return db.dropTable('essentialoils');
 };
 
 exports._meta = {

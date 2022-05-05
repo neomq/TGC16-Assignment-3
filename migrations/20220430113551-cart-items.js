@@ -15,7 +15,7 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function (db) {
-  return db.createTable('cartItems', {
+  return db.createTable('cart_items', {
     id: {
       type: 'int',
       unsigned: true,
@@ -31,7 +31,7 @@ exports.up = function (db) {
       unsigned: true,
       notNull: true,
       foreignKey: {
-        name: 'cartItems_user_fk',
+        name: 'cart_items_user_fk',
         table: 'users',
         mapping: 'id',
         rules: {
@@ -45,7 +45,7 @@ exports.up = function (db) {
       notNull: true,
       unsigned: true,
       foreignKey: {
-        name: 'cartItems_product_fk',
+        name: 'cart_items_product_fk',
         table: 'products',
         rules: {
           onDelete: 'CASCADE',
@@ -58,7 +58,7 @@ exports.up = function (db) {
 };
 
 exports.down = function(db) {
-  return db.dropTable('cartItems');
+  return db.dropTable('cart_items');
 };
 
 exports._meta = {

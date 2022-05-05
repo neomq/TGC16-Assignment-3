@@ -4,8 +4,6 @@ const { checkIfAuthenticated } = require('../../middlewares');
 const CartServices = require('../../services/cart_services');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-// const bodyParser = require('body-parser');
-
 router.get('/', checkIfAuthenticated, async function(req,res) {
     // 1. get all the cart items
     let cartServices = new CartServices(req.query.user_id);

@@ -8,7 +8,7 @@ async function getCart(userId) {
             'user_id': userId
         }).fetch({
             require: false, // will not throw an exception if no results are found
-            withRelated: ['products', 'products.essentialoil', 'products.note', 'products.size']
+            withRelated: ['products', 'products.essentialoil', 'products.itemtype', 'products.size']
         });
 }
 

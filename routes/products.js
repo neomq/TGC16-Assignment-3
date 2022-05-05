@@ -16,7 +16,7 @@ const dataLayer = require('../dal/products')
 // GET ALL PRODUCTS
 router.get('/', checkIfAuthenticated, async (req, res) => {
     
-    const allNotes = await dataLayer.allNotes();
+    const allItemTypes = await dataLayer.allItemTypes();
     const allSizes = await dataLayer.allSizes();
     const allEssentialOils = await dataLayer.allEssentialOils();
     const allScents = await dataLayer.allScents();
@@ -24,18 +24,18 @@ router.get('/', checkIfAuthenticated, async (req, res) => {
     const allBenefits = await dataLayer.allBenefits();
 
     // Create Product Search
-   let searchProduct = createSearchProductForm(allEssentialOils, allSizes, allNotes, allScents, allUsages, allBenefits);
+   let searchProduct = createSearchProductForm(allEssentialOils, allSizes, allItemTypes, allScents, allUsages, allBenefits);
    let q = Products.collection();
 
    // Add empty option to select field
-   allNotes.unshift([0, '---']);
+   allItemTypes.unshift([0, '---']);
    allSizes.unshift([0, '---']);
    allEssentialOils.unshift([0, '---']);
 
    searchProduct.handle(req, {
        'empty': async (form) => {
            let products = await q.fetch({
-               withRelated: ['note', 'essentialoil', 'scent', 'usage', 'benefit', 'size']
+               withRelated: ['itemtype', 'essentialoil', 'scent', 'usage', 'benefit', 'size']
            })
            console.log(products.toJSON())
            res.render('products/index', {
@@ -45,7 +45,7 @@ router.get('/', checkIfAuthenticated, async (req, res) => {
        },
        'error': async (form) => {
            let products = await q.fetch({
-               withRelated: ['note', 'essentialoil', 'scent', 'usage', 'benefit', 'size']
+               withRelated: ['itemtype', 'essentialoil', 'scent', 'usage', 'benefit', 'size']
            })
            res.render('products/index', {
                'products': products.toJSON(),
@@ -65,8 +65,8 @@ router.get('/', checkIfAuthenticated, async (req, res) => {
            if (form.data.size_id && form.data.size_id != "0") {
                q = q.where('size_id', 'like', req.query.size_id)
            }
-           if (form.data.note_id && form.data.note_id != "0") {
-               q = q.where('note_id', 'like', req.query.note_id)
+           if (form.data.item_type_id && form.data.item_type_id != "0") {
+               q = q.where('item_type_id', 'like', req.query.item_type_id)
            }
            if (form.data.scent) {
                q = q.query('join', 'products_scent', 'products.id', 'products_scent.product_id')
@@ -81,7 +81,7 @@ router.get('/', checkIfAuthenticated, async (req, res) => {
                    .where('benefit_id', 'in', form.data.benefits.split(','))
            }
            let products = await q.fetch({
-               withRelated: ['note', 'essentialoil', 'scent', 'usage', 'benefit', 'size']
+               withRelated: ['itemtype', 'essentialoil', 'scent', 'usage', 'benefit', 'size']
            })
            //console.log(products.toJSON())
            res.render('products/index', {
@@ -97,14 +97,14 @@ router.get('/', checkIfAuthenticated, async (req, res) => {
 // render create form
 router.get('/create', checkIfAuthenticated, async (req, res) => {
     
-    const allNotes = await dataLayer.allNotes();
+    const allItemTypes = await dataLayer.allItemTypes();
     const allSizes = await dataLayer.allSizes();
     const allEssentialOils = await dataLayer.allEssentialOils();
     const allScents = await dataLayer.allScents();
     const allUsages = await dataLayer.allUsages();
     const allBenefits = await dataLayer.allBenefits();
 
-    const productForm = createProductForm(allNotes, allSizes, allEssentialOils, allScents, allUsages, allBenefits);
+    const productForm = createProductForm(allItemTypes, allSizes, allEssentialOils, allScents, allUsages, allBenefits);
     
     res.render('products/create', {
         'form': productForm.toHTML(bootstrapField),
@@ -116,14 +116,14 @@ router.get('/create', checkIfAuthenticated, async (req, res) => {
 // process submitted form
 router.post('/create', checkIfAuthenticated, async(req, res) => {
 
-    const allNotes = await dataLayer.allNotes();
+    const allItemTypes = await dataLayer.allItemTypes();
     const allSizes = await dataLayer.allSizes();
     const allEssentialOils = await dataLayer.allEssentialOils();
     const allScents = await dataLayer.allScents();
     const allUsages = await dataLayer.allUsages();
     const allBenefits = await dataLayer.allBenefits();
 
-    const productForm = createProductForm(allNotes, allSizes, allEssentialOils, allScents, allUsages, allBenefits);
+    const productForm = createProductForm(allItemTypes, allSizes, allEssentialOils, allScents, allUsages, allBenefits);
     console.log(productForm)
     
     productForm.handle(req, {
@@ -161,19 +161,19 @@ router.get('/:product_id/update', checkIfAuthenticated, async (req, res) => {
     const productId = req.params.product_id
     const product = await dataLayer.getProductByID(productId);
 
-    const allNotes = await dataLayer.allNotes();
+    const allItemTypes = await dataLayer.allItemTypes();
     const allSizes = await dataLayer.allSizes();
     const allEssentialOils = await dataLayer.allEssentialOils();
     const allScents = await dataLayer.allScents();
     const allUsages = await dataLayer.allUsages();
     const allBenefits = await dataLayer.allBenefits();
 
-    const productForm = createProductForm(allNotes, allSizes, allEssentialOils, allScents, allUsages, allBenefits);
+    const productForm = createProductForm(allItemTypes, allSizes, allEssentialOils, allScents, allUsages, allBenefits);
 
     // fill in the existing values
     productForm.fields.price.value = product.get('price');
     productForm.fields.stock.value = product.get('stock');
-    productForm.fields.note_id.value = product.get('note_id');
+    productForm.fields.item_type_id.value = product.get('item_type_id');
     productForm.fields.size_id.value = product.get('size_id');
     productForm.fields.essentialOil_id.value = product.get('essentialOil_id');
 
@@ -209,7 +209,7 @@ router.post('/:product_id/update', checkIfAuthenticated, async (req, res) => {
     const productId = req.params.product_id
     const product = await dataLayer.getProductByID(productId);
 
-    const allNotes = await dataLayer.allNotes();
+    const allItemTypes = await dataLayer.allItemTypes();
     const allSizes = await dataLayer.allSizes();
     const allEssentialOils = await dataLayer.allEssentialOils();
     const allScents = await dataLayer.allScents();
@@ -217,7 +217,7 @@ router.post('/:product_id/update', checkIfAuthenticated, async (req, res) => {
     const allBenefits = await dataLayer.allBenefits();
 
     // process the form
-    const productForm = createProductForm(allNotes, allSizes, allEssentialOils, allScents, allUsages, allBenefits);
+    const productForm = createProductForm(allItemTypes, allSizes, allEssentialOils, allScents, allUsages, allBenefits);
     productForm.handle(req, {
         'success': async (form) => {
             let { scent, usage, benefit, ...productData } = form.data;

@@ -2,8 +2,8 @@ const bookshelf = require('../bookshelf')
 
 const Products = bookshelf.model('Products', {
     tableName:'products',
-    note() {
-        return this.belongsTo('Note')
+    itemtype() {
+        return this.belongsTo('Itemtype')
     },
     size() {
         return this.belongsTo('Size')
@@ -22,8 +22,8 @@ const Products = bookshelf.model('Products', {
     }
 });
 
-const Note = bookshelf.model('Note', {
-    tableName:'note',
+const Itemtype = bookshelf.model('Itemtype', {
+    tableName:'item_type',
     products() {
         return this.hasMany('Products')
     }
@@ -37,7 +37,7 @@ const Size = bookshelf.model('Size', {
 });
 
 const Essentialoils = bookshelf.model('Essentialoils', {
-    tableName:'essentialOils',
+    tableName:'essentialoils',
     products() {
         return this.hasMany('Products')
     }
@@ -69,11 +69,25 @@ const User = bookshelf.model('User',{
 })
 
 const CartItem = bookshelf.model('CartItem', {
-    tableName: 'cartItems',
+    tableName: 'cart_items',
     products() {
         return this.belongsTo('Products')
     }
 })
 
+const Orderstatus = bookshelf.model('Orderstatus',{
+    tableName: 'order_status'
+})
 
-module.exports = { Products, Note, Size, Essentialoils, Scent, Usage, Benefit, User, CartItem };
+module.exports = {
+                    Products,
+                    Itemtype,
+                    Size, 
+                    Essentialoils, 
+                    Scent, 
+                    Usage, 
+                    Benefit, 
+                    User, 
+                    CartItem,
+                    Orderstatus
+                };

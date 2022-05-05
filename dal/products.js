@@ -1,8 +1,8 @@
 // import in the Product model
-const { Products, Note, Size, Essentialoils, Scent, Usage, Benefit } = require('../models');
+const { Products, Itemtype, Size, Essentialoils, Scent, Usage, Benefit } = require('../models');
 
-const allNotes = async() => {
-    return await Note.fetchAll().map((n) => {
+const allItemTypes = async() => {
+    return await Itemtype.fetchAll().map((n) => {
         return [n.get('id'), n.get('name')];
     })
 }
@@ -36,7 +36,7 @@ const getProductByID = async (productId) => {
         'id': productId
     }).fetch({
         require: true,
-        withRelated:['essentialoil', 'scent', 'usage', 'benefit', 'note', 'size']
+        withRelated:['essentialoil', 'scent', 'usage', 'benefit', 'itemtype', 'size']
     })
 }
 
@@ -53,7 +53,7 @@ const getAllProducts = async () => {
 }
 
 module.exports = {
-    allNotes,
+    allItemTypes,
     allSizes,
     allEssentialOils,
     allScents,
