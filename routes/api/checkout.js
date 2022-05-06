@@ -3,6 +3,7 @@ const router = express.Router();
 const { checkIfAuthenticated } = require('../../middlewares');
 const CartServices = require('../../services/cart_services');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const { Orders, User, Orderdetails, Orderstatus } = require("../../models");
 
 router.get('/', checkIfAuthenticated, async function(req,res) {
     // 1. get all the cart items
@@ -26,7 +27,9 @@ router.get('/', checkIfAuthenticated, async function(req,res) {
         lineItems.push(lineItem);
         meta.push({
             'product_id': item.get('product_id'),
-            'quantity': item.get('item_quantity')
+            'quantity': item.get('item_quantity'),
+            'user_id': item.get('user_id'),
+            'sub_total': item.get('sub_total')
         })
     }
 
@@ -37,8 +40,6 @@ router.get('/', checkIfAuthenticated, async function(req,res) {
     const payment = {
         payment_method_types: ['card'],
         line_items: lineItems,
-        // success_url: 'https://www.google.com/' + "?sessionId={CHECKOUT_SESSION_ID}",
-        // cancel_url: 'https://www.straitstimes.com/',
         success_url: process.env.STRIPE_SUCCESS_URL + "?sessionId={CHECKOUT_SESSION_ID}",
         cancel_url: process.env.STRIPE_CANCELLED_URL,
         metadata:{
@@ -56,6 +57,7 @@ router.get('/', checkIfAuthenticated, async function(req,res) {
         'sessionId': stripeSession.id,
         'publishableKey': process.env.STRIPE_PUBLISHABLE_KEY
     });
+
 });
 
 router.get('/success', function(req,res){
@@ -66,22 +68,15 @@ router.get('/cancelled', function(req,res){
     res.send("Payment has been cancelled")
 });
 
-
-
 // this is the webhook route
 // stripe will send a POST request to this route when a
 // payment is completed
 router.post('/process_payment', express.raw({
     'type':'application/json'
-}), function(req,res){
+}), async function(req,res){
     let payload = req.body;
-    // console.log(payload)
-    
     let endpointSecret = process.env.STRIPE_ENDPOINT_SECRET;
-    // console.log(endpointSecret)
-    
     let sigHeader = req.headers['stripe-signature'];
-    console.log(sigHeader)
     
     let event;
     try {
@@ -90,12 +85,50 @@ router.post('/process_payment', express.raw({
         res.send({
             "error": e.message
         })
-        console.log(e.message)
+        // console.log(e.message)
     }
     console.log(event)
     if (event.type === 'checkout.session.completed') {
-        let stripeSession = event.data.object;
-        console.log(stripeSession)
+        // let stripeSession = event.data.object; 
+
+        // retrieve purchase info and total amount of purchase
+        let purchases = JSON.parse(event.data.object.metadata.orders)
+        //console.log(purchases)
+        let total_amount = JSON.parse(event.data.object.amount_total)
+  
+        // retrieve user info
+        const user = await User.where({
+            "id": purchases[0].user_id
+        }).fetch({
+            require: false
+        })
+
+        // create a new order
+        const order = new Orders()
+        order.set("date", new Date()) 
+        order.set("order_total", total_amount) 
+        order.set("order_status_id", 2) 
+        order.set("user_id", user.get('id')) 
+        order.set("shipping_address", user.get('address'))
+        await order.save()
+
+        // save order details into orders
+        for (let item of purchases) {
+            const orderDetail = new Orderdetails();
+            orderDetail.set("order_id", order.get('id'))
+            orderDetail.set("product_id", item.product_id)
+            orderDetail.set("item_quantity", item.quantity)
+            orderDetail.set("sub_total", item.sub_total)
+            orderDetail.save()
+        }
+        
+        // Delete items from cart
+        let user_id = user.get('id')
+        const cartServices = new CartServices(user_id)
+        for (let item of purchases) {
+            await cartServices.removeFromCart(item.product_id)
+        }
+
     }
     res.send({
         'recieved': true

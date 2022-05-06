@@ -23,6 +23,7 @@ router.get('/:user_id/add/:product_id', async function(req,res){
         res.status(200)
         res.send("Item added to shopping cart")
     } catch (e) {
+        console.log(e)
         res.status(500)
         res.send("Unable to add item to shopping cart")
     }
