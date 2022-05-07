@@ -3,25 +3,7 @@
 {{#block 'content'}}
 
 <div class="row m-0">
-    {{!-- Navigation --}}
-    <div class="row m-0 col-2 px-4 pt-4 border-end">
-        <ul class="nav nav-pills flex-column p-0">
-            <li class="nav-item">
-                <a class="nav-link px-2" aria-current="page" href="/products">View Products</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link px-2" href="/products/create">Add Products</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link px-2" href="/products/essential-oils">View Essential Oils</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link px-2" href="/products/essential-oils/create">Add Essential Oils</a>
-            </li>
-        </ul>
-    </div>
-
-    <div class="row m-0 col-10 px-4 pt-4">
+    <div class="row m-0 px-4 pt-4">
         <div class="pb-3 mb-3 border-bottom">
             <h4 class="display-6">Delete Product</h4>
             <p class="lead">{{product.essentialoil.name}} (Product ID: #{{product.id}})</p>

@@ -25,7 +25,7 @@ var bootstrapField = function (name, object) {
     return '<div class="form-group">' + label + widget + error + '</div>';
 };
 
-// for product search form
+// for search
 var bootstrapFieldcol3 = function (name, object) {
     if (!Array.isArray(object.widget.classes)) {
         object.widget.classes = [];
@@ -329,6 +329,45 @@ const createSearchProductForm = (essentialOils, size, itemtype, scent, usages, b
     })
 }
 
+const createSearchOrderForm = (orderstatus) => {
+    return forms.create({
+        'name': fields.string({
+            label: 'Customer Name',
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            }
+        }),
+        'email': fields.string({
+            label: 'Customer Email',
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            }
+        }),
+        'shipping_address': fields.string({
+            label: 'Shipping Address',
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            }
+        }),
+        'order_status_id': fields.string({
+            label: 'Order Status',
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.select(),
+            choices: orderstatus
+        })
+    })
+}
+
 module.exports = {
     createProductForm, // Create new product
     bootstrapField,
@@ -336,5 +375,6 @@ module.exports = {
     createLoginForm, // User Login 
     createEssentialoilForm, // Create new essential oil
     createRegistrationForm, // User Registration
-    createSearchProductForm
+    createSearchProductForm,
+    createSearchOrderForm
 };

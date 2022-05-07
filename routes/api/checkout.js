@@ -93,7 +93,6 @@ router.post('/process_payment', express.raw({
 
         // retrieve purchase info and total amount of purchase
         let purchases = JSON.parse(event.data.object.metadata.orders)
-        //console.log(purchases)
         let total_amount = JSON.parse(event.data.object.amount_total)
   
         // retrieve user info
@@ -107,7 +106,7 @@ router.post('/process_payment', express.raw({
         const order = new Orders()
         order.set("date", new Date()) 
         order.set("order_total", total_amount) 
-        order.set("order_status_id", 2) 
+        order.set("order_status_id", 1) 
         order.set("user_id", user.get('id')) 
         order.set("shipping_address", user.get('address'))
         await order.save()
