@@ -7,6 +7,9 @@ const { Orders, Orderstatus, Orderdetails } = require("../models")
 // import in the Forms
 const { bootstrapFieldcol3, createSearchOrderForm } = require('../forms');
 
+// import in the CheckIfAuthenticated middleware
+const { checkIfAuthenticated } = require('../middlewares');
+
 // GET ALL ORDERS
 router.get("/", async (req, res) => {
 
@@ -88,6 +91,43 @@ router.get("/", async (req, res) => {
         }
     })
 
+})
+
+// DELETE ORDERS
+router.get('/:order_id/delete', checkIfAuthenticated, async(req,res)=>{
+    
+    // fetch the order that we want to delete
+    const order = await Orders.where({
+        'id': req.params.order_id
+    }).fetch({
+        require: true,
+        withRelated:['orderstatus', 'user', 'orderdetails']
+    });
+
+    // format order date / time
+    let orderToDelete = order.toJSON()
+    let order_date_formatted = orderToDelete.date.toString().split(' G')[0]
+    orderToDelete.date_formatted = order_date_formatted
+
+    res.render('orders/delete', {
+        'order': orderToDelete
+    })
+});
+// process delete
+router.post('/:order_id/delete', checkIfAuthenticated, async(req,res)=>{
+    
+    // fetch the order that we want to delete
+    const order = await Orders.where({
+        'id': req.params.order_id
+    }).fetch({
+        require: true,
+        withRelated:['orderstatus', 'user', 'orderdetails']
+    });
+    
+    await order.destroy();
+
+    req.flash("success_messages", `Order has been deleted`)
+    res.redirect('/orders')
 })
 
 
