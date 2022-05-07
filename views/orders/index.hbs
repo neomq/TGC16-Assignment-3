@@ -1,0 +1,89 @@
+{{#extends 'base'}}
+
+{{#block 'content'}}
+
+ <div class="row m-0">
+    {{!-- Table --}}
+    <div class="row m-0 px-4 pt-4">
+        <div class="d-flex justify-content-between pb-3 mb-3 border-bottom">
+            <h4 class="display-6">All Orders</h4>
+        </div>
+        {{!-- Search Essential Oil --}}
+        <div>
+            <form method="GET">
+
+                <div class="py-3">
+                    <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        <i class="bi bi-funnel"></i>
+                        Filter
+                    </button>
+                    <a class="btn btn-link" href="/products" role="button">Reset</a>
+                </div>
+                <div class="collapse pt-2 pb-3" id="collapseExample">
+                    <div class="row">
+                        {{{form}}}
+                    </div>
+                    <div class="d-flex justify-content-end py-3">
+                        <button class="btn btn-primary mx-2" type="submit">Apply Filter</button>
+                    </div>
+                </div>             
+            </form>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Order Date / Time</th>
+                    <th>Status</th>
+                    <th>Customer Name</th>
+                    <th>Customer Email</th>
+                    <th>Total</th>
+                    <th>Shipping Address</th>
+                    <th>Actions</th>
+                </tr>
+
+            </thead>
+            <tbody>
+                {{#each orders}}
+                <tr>
+                    <td>
+                        #{{this.id}}
+                    </td>
+                    <td>
+                        {{this.date_formatted}}
+                    </td>
+                    <td>
+                        {{this.orderstatus.status}}
+                    </td>
+                    <td>
+                        {{this.user.name}}
+                    </td>
+                    <td>
+                        {{this.user.email}}
+                    </td>
+                    <td>
+                        {{this.order_total}}
+                    </td>
+                    <td>
+                        {{this.shipping_address}}
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-gear-fill"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item btn btn-primary btn-sm" href="/orders/{{this.id}}/update">View / Update Order</a></li>
+                                <li><a class="dropdown-item btn btn-danger btn-sm" href="/orders/{{this.id}}/delete">Delete Order</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+{{/block}}
+{{/extends}}
