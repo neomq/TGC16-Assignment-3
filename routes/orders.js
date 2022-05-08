@@ -197,7 +197,7 @@ router.post('/:order_id/update', checkIfAuthenticated, async (req, res) => {
 // DELETE ORDERS
 router.get('/:order_id/delete', checkIfAuthenticated, async(req,res)=>{
     
-    // fetch the order that we want to delete
+    // fetch the order to delete
     const order = await Orders.where({
         'id': req.params.order_id
     }).fetch({
@@ -209,8 +209,6 @@ router.get('/:order_id/delete', checkIfAuthenticated, async(req,res)=>{
     let orderToDelete = order.toJSON()
     let order_date_formatted = orderToDelete.date.toString().split(' G')[0]
     orderToDelete.date_formatted = order_date_formatted
-
-    //console.log(orderToDelete)
 
     res.render('orders/delete', {
         'order': orderToDelete
