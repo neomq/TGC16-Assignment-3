@@ -53,8 +53,8 @@ router.get('/', checkIfAuthenticated, async (req, res) => {
            })
        },
        'success': async (form) => {
-           if (form.data.essentialOil_id && form.data.essentialOil_id != "0") {
-               q = q.where('essentialOil_id', 'like', req.query.essentialOil_id)
+           if (form.data.essentialoil_id && form.data.essentialoil_id != "0") {
+               q = q.where('essentialoil_id', 'like', req.query.essentialoil_id)
            }
            if (form.data.min_price) {
                q = q.where('price', '>=', req.query.min_price)

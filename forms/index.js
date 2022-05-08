@@ -54,7 +54,7 @@ const createProductForm = (itemtype, size, essentialOils, scent, usages, benefit
             required: true,
             widget: widgets.hidden()
         }),
-        'essentialOil_id': fields.string({
+        'essentialoil_id': fields.string({
             label:'Essential Oil Name',
             required: true,
             errorAfterField: true,
@@ -253,7 +253,7 @@ const createLoginForm = () => {
 
 const createSearchProductForm = (essentialOils, size, itemtype, scent, usages, benefits) => {
     return forms.create({
-        'essentialOil_id': fields.string({
+        'essentialoil_id': fields.string({
             label: 'Essential Oil Name',
             required: false,
             errorAfterField: true,
