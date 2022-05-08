@@ -175,7 +175,7 @@ router.get('/:product_id/update', checkIfAuthenticated, async (req, res) => {
     productForm.fields.stock.value = product.get('stock');
     productForm.fields.item_type_id.value = product.get('item_type_id');
     productForm.fields.size_id.value = product.get('size_id');
-    productForm.fields.essentialOil_id.value = product.get('essentialOil_id');
+    productForm.fields.essentialoil_id.value = product.get('essentialoil_id');
 
     // set the image in the product form
     productForm.fields.image.value = product.get('image');
