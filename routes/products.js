@@ -63,10 +63,10 @@ router.get('/', checkIfAuthenticated, async (req, res) => {
                q = q.where('price', '<=', req.query.max_price);
            }
            if (form.data.size_id && form.data.size_id != "0") {
-               q = q.where('size_id', 'like', req.query.size_id)
+               q = q.where('size_id', '=', req.query.size_id)
            }
            if (form.data.item_type_id && form.data.item_type_id != "0") {
-               q = q.where('item_type_id', 'like', req.query.item_type_id)
+               q = q.where('item_type_id', '=', req.query.item_type_id)
            }
            if (form.data.scent) {
                q = q.query('join', 'products_scent', 'products.id', 'products_scent.product_id')
