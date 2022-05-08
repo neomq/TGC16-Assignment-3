@@ -2,16 +2,16 @@ const express = require("express")
 const router = express.Router()
 
 // import in the Models
-const { Orders, Orderstatus, Orderdetails } = require("../models")
+const { Orders, Orderstatus } = require("../models")
 
 // import in the Forms
-const { bootstrapFieldcol3, createSearchOrderForm } = require('../forms');
+const { bootstrapField, bootstrapFieldcol3, createSearchOrderForm, createOrderUpdateStatusForm, createOrderUpdateAddressForm } = require('../forms');
 
 // import in the CheckIfAuthenticated middleware
 const { checkIfAuthenticated } = require('../middlewares');
 
 // GET ALL ORDERS
-router.get("/", async (req, res) => {
+router.get("/", checkIfAuthenticated, async (req, res) => {
 
     const allOrderStatuses = await Orderstatus.fetchAll().map((status) => {
         return [status.get('id'), status.get('status')];
@@ -36,7 +36,7 @@ router.get("/", async (req, res) => {
                 let order_date_formatted = order.date.toString().split(' G')[0]
                 order.date_formatted = order_date_formatted
             }
-            console.log(allOrders)
+            // console.log(allOrders)
             res.render('orders/index', {
                 'orders': allOrders,
                 'form': form.toHTML(bootstrapFieldcol3)
@@ -91,6 +91,107 @@ router.get("/", async (req, res) => {
         }
     })
 
+})
+
+// UPDATE ORDERS
+router.get('/:order_id/update', checkIfAuthenticated, async (req, res) => {
+    
+    // retrieve the orders
+    const order = await Orders.where({
+        'id': req.params.order_id
+    }).fetch({
+        require: true,
+        withRelated:['orderstatus',
+                    'orderdetails',
+                    'orderdetails.products',
+                    'orderdetails.products.size',
+                    'orderdetails.products.essentialoil',
+                    'user']
+    });
+
+    const allOrderStatuses = await Orderstatus.fetchAll().map((status) => {
+        return [status.get('id'), status.get('status')];
+    })
+    
+    // update order status
+    const updateOrderStatusForm = createOrderUpdateStatusForm(allOrderStatuses);
+    // fill in existing order status
+    updateOrderStatusForm.fields.order_status_id.value = order.get('order_status_id');
+
+    // update order shipping address
+    const updateOrderAddressForm = createOrderUpdateAddressForm();
+    // fill in existing shipping address
+    updateOrderAddressForm.fields.shipping_address.value = order.get('shipping_address');
+
+    // format order date / time
+    let orderToUpdate = order.toJSON()
+    let order_date_formatted = orderToUpdate.date.toString().split(' G')[0]
+    orderToUpdate.date_formatted = order_date_formatted
+
+    res.render('orders/update', {
+        'statusform': updateOrderStatusForm.toHTML(bootstrapField),
+        'addressform': updateOrderAddressForm.toHTML(bootstrapField),
+        'order': orderToUpdate
+    })
+
+})
+// process update
+router.post('/:order_id/update', checkIfAuthenticated, async (req, res) => {
+    
+    // retrieve the order to update
+    const order = await Orders.where({
+        'id': req.params.order_id
+    }).fetch({
+        require: true,
+        withRelated:['orderstatus',
+                    'orderdetails',
+                    'orderdetails.products',
+                    'orderdetails.products.size',
+                    'orderdetails.products.essentialoil',
+                    'user']
+    });
+
+    const allOrderStatuses = await Orderstatus.fetchAll().map((status) => {
+        return [status.get('id'), status.get('status')];
+    })
+
+    // format order date / time
+    let orderToUpdate = order.toJSON()
+    let order_date_formatted = orderToUpdate.date.toString().split(' G')[0]
+    orderToUpdate.date_formatted = order_date_formatted
+
+    // update order status
+    const updateOrderStatusForm = createOrderUpdateStatusForm(allOrderStatuses);
+    updateOrderStatusForm.handle(req, {
+        'success': async (form) => {
+            order.set(form.data);
+            order.save();
+        },
+        'error': async (form) => {
+            res.render('orders/update', {
+                'form': form.toHTML(bootstrapField),
+                'order': orderToUpdate
+            })
+        }
+    })
+
+    // update order address
+    const updateOrderAddressForm = createOrderUpdateAddressForm();
+    updateOrderAddressForm.handle(req, {
+        'success': async (form) => {
+            order.set(form.data);
+            order.save();
+
+            req.flash("success_messages", `Order has been updated!`)
+            res.redirect('/orders');
+        },
+        'error': async (form) => {
+            res.render('orders/update', {
+                'form': form.toHTML(bootstrapField),
+                'order': orderToUpdate
+            })
+        }
+    })
 })
 
 // DELETE ORDERS

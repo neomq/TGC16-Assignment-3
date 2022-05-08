@@ -1,0 +1,94 @@
+{{#extends 'base'}}
+
+{{#block 'content'}}
+
+<div class="row m-0">     
+
+    <div class="row m-0 px-4 pt-4">
+        <div class="pb-3 mb-3 border-bottom">
+            <h4 class="display-6">Order #{{order.id}}</h4>
+            <p class="lead text-muted">{{order.date_formatted}}</p>
+        </div>
+        <p class="lead fs-4">Order Details</p>
+        <div class="row">
+            {{!-- Order details --}}
+            <div class="col-9">
+                <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product ID</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Size</th>
+                        <th>Quantity</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each order.orderdetails}}
+                    <tr>
+                        <td>
+                            #{{this.id}}
+                        </td>
+                        <td>
+                            {{#if this.products.image}}
+                                <img src="{{this.products.image}}" class="img-fluid" width="100" height="100"/>
+                            {{/if}}
+                        </td>
+                        <td>
+                            {{this.products.essentialoil.name}}
+                        </td>
+                        <td>
+                            {{this.products.size.size}}
+                        </td>
+                        <td>
+                            {{this.item_quantity}}
+                        </td>
+                        <td>
+                            {{this.sub_total}}
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="fw-bold">
+                            Grand Total
+                        </td>
+                        <td>
+                            {{order.order_total}}
+                        </td>
+                    </tr>
+                </tfoot>
+                </table>
+            </div>
+            
+            <div class="col-3">
+                <form method="POST">
+                    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+                        {{{statusform}}}
+
+                        {{!-- Bootstrap card --}}
+                        <div class="card border-dark my-4">
+                            <div class="card-header">Customer Information</div>
+                            <div class="card-body text-dark">
+                                <p class="m-0 fw-bold">{{order.user.name}}</p>
+                                <p class="text-muted">{{order.user.email}}</p>
+                                {{{addressform}}}
+                            </div>
+                        </div>
+
+                    <input type="submit" value="Update Order" class="btn btn-primary"/>
+                    <a href="/orders" class="btn btn-outline-primary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{{/block}}
+
+{{/extends}}

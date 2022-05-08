@@ -25,7 +25,7 @@ var bootstrapField = function (name, object) {
     return '<div class="form-group">' + label + widget + error + '</div>';
 };
 
-// for search
+// Bootstrap col-3
 var bootstrapFieldcol3 = function (name, object) {
     if (!Array.isArray(object.widget.classes)) {
         object.widget.classes = [];
@@ -368,6 +368,36 @@ const createSearchOrderForm = (orderstatus) => {
     })
 }
 
+const createOrderUpdateStatusForm = (orderstatus) => {
+    return forms.create({
+        'order_status_id': fields.string({
+            label: 'Order Status',
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.select(),
+            choices: orderstatus
+        })
+    })
+}
+
+const createOrderUpdateAddressForm = () => {
+    return forms.create({
+        'shipping_address': fields.string({
+            label: 'Shipping Address',
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.textarea(),
+            validators: [validators.maxlength(200)]
+        })
+    })
+}
+
 module.exports = {
     createProductForm, // Create new product
     bootstrapField,
@@ -375,6 +405,8 @@ module.exports = {
     createLoginForm, // User Login 
     createEssentialoilForm, // Create new essential oil
     createRegistrationForm, // User Registration
-    createSearchProductForm,
-    createSearchOrderForm
+    createSearchProductForm, // Search products
+    createSearchOrderForm, // Search orders
+    createOrderUpdateStatusForm, // update order status
+    createOrderUpdateAddressForm // update order address
 };

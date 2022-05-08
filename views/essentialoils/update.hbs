@@ -6,13 +6,16 @@
     <div class="row m-0 px-4 pt-4">
         <div class="pb-3 mb-3 border-bottom">
             <h4 class="display-6">Update Essential Oil</h4>
-            <p class="lead">{{essentialoil.name}} (ID: #{{essentialoil.id}})</p>
+            <p class="lead text-muted">{{essentialoil.name}} (ID: #{{essentialoil.id}})</p>
         </div>
 
         <form method="POST">
             <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
             {{{form}}}
-            <input type="submit" value="Update Product" class="btn btn-primary mt-3"/>
+            <div class="d-grid gap-2 d-md-block my-4">
+                <input type="submit" value="Update Essential Oil" class="btn btn-primary"/>
+                <a class="btn btn-outline-primary" href="/products/essential-oils" role="button">Cancel</a>
+            </div>
         </form>
     </div>
 </div>
