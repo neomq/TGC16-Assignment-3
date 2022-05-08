@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router()
 
 // import in the Models
-const { Orders, Orderstatus } = require("../models")
+const { Orders, Orderstatus, Orderdetails } = require("../models")
 
 // import in the Forms
 const { bootstrapField, bootstrapFieldcol3, createSearchOrderForm, createOrderUpdateStatusForm, createOrderUpdateAddressForm } = require('../forms');
@@ -210,6 +210,8 @@ router.get('/:order_id/delete', checkIfAuthenticated, async(req,res)=>{
     let order_date_formatted = orderToDelete.date.toString().split(' G')[0]
     orderToDelete.date_formatted = order_date_formatted
 
+    //console.log(orderToDelete)
+
     res.render('orders/delete', {
         'order': orderToDelete
     })
@@ -217,15 +219,24 @@ router.get('/:order_id/delete', checkIfAuthenticated, async(req,res)=>{
 // process delete
 router.post('/:order_id/delete', checkIfAuthenticated, async(req,res)=>{
     
-    // fetch the order that we want to delete
+    // fetch the order to delete
     const order = await Orders.where({
         'id': req.params.order_id
     }).fetch({
         require: true,
         withRelated:['orderstatus', 'user', 'orderdetails']
     });
+
+    // fetch the order details of the order
+    const orderDetail = await Orderdetails.where({
+        'order_id': req.params.order_id
+    }).fetch({
+        require: true
+    });
     
+    // Delete the order and order details
     await order.destroy();
+    await orderDetail.destroy;
 
     req.flash("success_messages", `Order has been deleted`)
     res.redirect('/orders')
