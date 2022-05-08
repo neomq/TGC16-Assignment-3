@@ -33,7 +33,7 @@ router.get('/', checkIfAuthenticated, async function(req,res) {
         })
     }
 
-    console.log("line items: ",lineItems);
+    // console.log("line items: ",lineItems);
 
     // 3. send the line items to Stripe and get a stripe payment id
     let metaData = JSON.stringify(meta);
@@ -47,7 +47,7 @@ router.get('/', checkIfAuthenticated, async function(req,res) {
         }
     }
 
-    console.log("payment:", payment);
+    // console.log("payment:", payment);
 
     // 4. register the payment
     let stripeSession = await stripe.checkout.sessions.create(payment);
