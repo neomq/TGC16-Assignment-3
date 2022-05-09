@@ -4,10 +4,37 @@ const { Products } = require("../../models")
 
 const productDataLayer = require('../../dal/products')
 
-router.get('/', async (req,res) => {
-    res.send(await productDataLayer.getAllProducts())
+// get all products
+router.get('/', async (req, res) => {
+
+    // res.send(await productDataLayer.getAllProducts())
+    
+    let displayProducts = await productDataLayer.getAllProducts()
+
+    // display product price in SGD
+    for (let p of displayProducts) {
+        let price_sgd = (p.price / 100).toFixed(2)
+        p.price_sgd = price_sgd
+    }
+
+    res.send(displayProducts)
 })
 
+// get individual product by id
+router.get('/:product_id', async (req, res) => {
+    const productId = req.params.product_id
+    const eachProduct = await productDataLayer.getProductByID(productId);
+
+    let displayEachProduct = eachProduct.toJSON()
+    
+    // display product price in SGD
+    let price_sgd = (displayEachProduct.price / 100).toFixed(2)
+    displayEachProduct.price_sgd = price_sgd
+    
+    res.send(displayEachProduct)
+})
+
+// search products
 router.get("/search", async (req, res) => {
     let q = Products.collection();
 
