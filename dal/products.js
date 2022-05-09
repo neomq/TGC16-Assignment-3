@@ -49,7 +49,18 @@ const getEssentialOilByID = async (essentialoilId) => {
 }
 
 const getAllProducts = async () => {
-    return await Products.fetchAll();
+    let allProducts = await Products.fetchAll({
+        require: true,
+        withRelated:['essentialoil', 'scent', 'usage', 'benefit', 'itemtype', 'size']
+    });
+
+    // Convert price to SGD
+    let productsForDisplay = allProducts.toJSON()
+    for (let p of productsForDisplay) {
+        let price_sgd = (p.price / 100).toFixed(2)
+        p.price_sgd = price_sgd
+    }
+    return productsForDisplay
 }
 
 module.exports = {
