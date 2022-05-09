@@ -8,16 +8,16 @@ const productDataLayer = require('../../dal/products')
 router.get('/', async (req, res) => {
 
     // res.send(await productDataLayer.getAllProducts())
-    
-    let displayProducts = await productDataLayer.getAllProducts()
+    let allProducts = await productDataLayer.getAllProducts()
+    let displayAllProducts = allProducts.toJSON()
 
     // display product price in SGD
-    for (let p of displayProducts) {
+    for (let p of displayAllProducts) {
         let price_sgd = (p.price / 100).toFixed(2)
         p.price_sgd = price_sgd
     }
-
-    res.send(displayProducts)
+    // console.log(displayProducts)
+    res.send(displayAllProducts)
 })
 
 // get individual product by id

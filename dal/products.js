@@ -49,7 +49,7 @@ const getEssentialOilByID = async (essentialoilId) => {
 }
 
 const getAllProducts = async () => {
-    await Products.fetchAll({
+    return await Products.fetchAll({
         require: true,
         withRelated:['essentialoil', 'scent', 'usage', 'benefit', 'itemtype', 'size']
     });
