@@ -34,18 +34,20 @@ router.post('/login', async (req, res) => {
 
         let accessToken = generateAccessToken(user, process.env.TOKEN_SECRET, "1h");
         let refreshToken = generateAccessToken(user, process.env.REFRESH_TOKEN_SECRET, "1d");
+        let user_id = user.get("id");
 
         console.log(accessToken)
         console.log(refreshToken)
 
+        res.status(200) // login success
         res.send({
             'accessToken': accessToken,
-            'refreshToken': refreshToken
+            'refreshToken': refreshToken,
+            'user_id': user_id
         })
     } else {
-        res.send({
-            'error':'Wrong email or password'
-        })
+        res.status(204)
+        res.send("Wrong email or password")
     }
 })
 
