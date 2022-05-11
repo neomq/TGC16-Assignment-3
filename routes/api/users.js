@@ -51,10 +51,14 @@ router.post('/login', async (req, res) => {
     }
 })
 
-router.get('/profile', checkIfAuthenticatedJWT, function(req,res) {
-    res.send({
-        'message':"Welcome" + req.user.name
-    })
+router.get('/profile', checkIfAuthenticatedJWT, async function(req,res) {
+    let user = await User.where({
+        'id': req.user.id
+    }).fetch({
+        require: true
+    });
+
+    res.send(user)
 })
 
 // send the refresh token
@@ -105,9 +109,9 @@ router.post('/logout', async(req,res)=>{
                 token.set('token', refreshToken);
                 token.set('date_created', new Date())
                 await token.save();
-                res.send({
-                    'message':"logged out"
-                })
+
+                res.status(200)
+                res.send("logged out successfully")
             })
     }
 })
