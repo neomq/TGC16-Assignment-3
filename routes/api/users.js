@@ -30,14 +30,19 @@ router.post('/login', async (req, res) => {
         require: false
     });
 
+    console.log(user.get('password'))
+    console.log(getHashedPassword(req.body.password))
+
     if (user && user.get('password') == getHashedPassword(req.body.password)) {
+
+        console.log("Password matched!")
 
         let accessToken = generateAccessToken(user, process.env.TOKEN_SECRET, "1h");
         let refreshToken = generateAccessToken(user, process.env.REFRESH_TOKEN_SECRET, "1d");
         let user_id = user.get("id");
 
-        console.log(accessToken)
-        console.log(refreshToken)
+        console.log("access token", accessToken)
+        console.log("refresh token", refreshToken)
 
         res.status(200) // login success
         res.send({
@@ -58,6 +63,19 @@ router.get('/profile', checkIfAuthenticatedJWT, async function(req,res) {
         require: true
     });
 
+    res.send(user)
+})
+
+router.post("/register", async (req, res) => {
+    let user = new User({
+        'name': req.body.username,
+        'email': req.body.email,
+        'address': req.body.address,
+        'password': getHashedPassword(req.body.password),
+        'role': 'customer'
+    })
+
+    await user.save()
     res.send(user)
 })
 
