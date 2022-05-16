@@ -1,11 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { checkIfAuthenticated } = require('../../middlewares');
 const CartServices = require('../../services/cart_services');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { Orders, User, Orderdetails, Orderstatus } = require("../../models");
 
-router.get('/:user_id', checkIfAuthenticated, async function(req,res) {
+router.get('/:user_id', async function(req,res) {
     // 1. get all the cart items
     let cartServices = new CartServices(req.params.user_id);
     let items = await cartServices.getCart();
