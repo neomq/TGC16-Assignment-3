@@ -7,8 +7,16 @@ router.get('/:user_id', async function(req,res){
     let cartServices = new CartServices(req.params.user_id);
     try {
         const cartItems = await cartServices.getCart();
+
+        let displayCartItems = cartItems.toJSON()
+        // display cart subtotal in SGD
+        for (let c of displayCartItems) {
+            let sub_total_sgd = (c.sub_total / 100).toFixed(2)
+            c.sub_total_sgd = sub_total_sgd
+        }
+        
         res.status(200)
-        res.send(cartItems.toJSON())
+        res.send(displayCartItems)
     } catch (e) {
         res.status(500)
         res.send("Unable to get shopping cart items")
