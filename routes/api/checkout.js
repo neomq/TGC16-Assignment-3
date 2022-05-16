@@ -5,9 +5,9 @@ const CartServices = require('../../services/cart_services');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { Orders, User, Orderdetails, Orderstatus } = require("../../models");
 
-router.get('/', checkIfAuthenticated, async function(req,res) {
+router.get('/:user_id', checkIfAuthenticated, async function(req,res) {
     // 1. get all the cart items
-    let cartServices = new CartServices(req.query.user_id);
+    let cartServices = new CartServices(req.params.user_id);
     let items = await cartServices.getCart();
 
     // 2. generate the line items
@@ -60,13 +60,13 @@ router.get('/', checkIfAuthenticated, async function(req,res) {
 
 });
 
-router.get('/success', function(req,res){
-    res.send('Payment successful');
-});
+// router.get('/success', function(req,res){
+//     res.send('Payment successful');
+// });
 
-router.get('/cancelled', function(req,res){
-    res.send("Payment has been cancelled")
-});
+// router.get('/cancelled', function(req,res){
+//     res.send("Payment has been cancelled")
+// });
 
 // this is the webhook route
 // stripe will send a POST request to this route when a
