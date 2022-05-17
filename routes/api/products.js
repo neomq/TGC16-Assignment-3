@@ -74,10 +74,10 @@ router.post("/search", async (req, res) => {
     }
 
     // filter by usage
-    // if (req.body.use) {
-    //     q = q.query('join', 'products_usages', 'products.id', 'products_usages.product_id', 'usages', 'usages.id', 'usage_id')
-    //         .where('usages.type', 'in', req.body.use)
-    // }
+    if (req.body.use) {
+        q = q.query('join', 'products_usages', 'products.id', 'products_usages.product_id')
+             .where('usage_id', 'in', req.body.use)
+    }
 
     // // filter by scent profile
     // if (req.body.scent) {
