@@ -6,7 +6,7 @@ async function getCart(userId) {
     return await CartItem.collection()
         .where({
             'user_id': userId
-        }).fetch({
+        }).orderBy("id","ASC").fetch({
             require: false, // will not throw an exception if no results are found
             withRelated: ['products', 'products.essentialoil', 'products.itemtype', 'products.size']
         });

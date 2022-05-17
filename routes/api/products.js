@@ -20,6 +20,18 @@ router.get('/', async (req, res) => {
     res.send(displayAllProducts)
 })
 
+// get product types
+router.get('/types', async (req, res) => {
+    let allTypes = await productDataLayer.allItemTypes()
+    res.send(allTypes)
+})
+
+// get product usages
+router.get('/usages', async (req, res) => {
+    let allUsages = await productDataLayer.allUsages()
+    res.send(allUsages)
+})
+
 // get individual product by id
 router.get('/:product_id', async (req, res) => {
     const productId = req.params.product_id
@@ -35,32 +47,48 @@ router.get('/:product_id', async (req, res) => {
 })
 
 // search products
-router.get("/search", async (req, res) => {
+router.post("/search", async (req, res) => {
     let q = Products.collection();
 
     // search product name
-    if (req.query.name) {
-        q = q.where("essentialoil_id", "=", "%" + req.query.name + "%")
+    // if (req.body.id) {
+    //     const findProducts = await q.where({
+    //         "id": req.body.id
+    //     }).fetch({
+    //         required: false,
+    //         // withRelated: ['itemtype', 'essentialoil', 'scent', 'usage', 'benefit', 'size']
+    //     })
+    //     res.send(findProducts)
+    // }
+
+    // search by product name
+    if (req.body.name) {
+        q = q.query('join', 'essentialoils', 'essentialoils.id', 'products.essentialoil_id')
+            .where('essentialoils.name', 'ilike', '%' + req.body.name + '%')
     }
+
     // filter by product type
-    if (req.query.item_type_id) {
-        q = q.where("item_type_id", "=", req.query.item_type_id)
+    if (req.body.type) {
+        q = q.query('join', 'item_type', 'item_type.id', 'products.item_type_id')
+            .where('item_type.name', 'like', req.body.type)
     }
+
     // filter by usage
-    if (req.query.usages) {
-        q = q.query('join', 'products_usages', 'products.id', 'products_usages.product_id')
-            .where('usage_id', 'in', req.query.usages.split(','))
-    }
-    // filter by scent profile
-    if (req.query.scent) {
-        q = q.query('join', 'products_scent', 'products.id', 'products_scent.product_id')
-            .where('scent_id', 'in', req.query.scent.split(','))
-    }
-    // filter by benefits
-    if (req.query.benefits) {
-        q = q.query('join', 'benefits_products', 'products.id', 'benefits_products.product_id')
-            .where('benefit_id', 'in', req.query.benefits.split(','))
-    }
+    // if (req.body.use) {
+    //     q = q.query('join', 'products_usages', 'products.id', 'products_usages.product_id', 'usages', 'usages.id', 'usage_id')
+    //         .where('usages.type', 'in', req.body.use)
+    // }
+
+    // // filter by scent profile
+    // if (req.body.scent) {
+    //     q = q.query('join', 'products_scent', 'products.id', 'products_scent.product_id')
+    //         .where('scent_id', 'in', req.body.scent.split(','))
+    // }
+    // // filter by benefits
+    // if (req.body.benefits) {
+    //     q = q.query('join', 'benefits_products', 'products.id', 'benefits_products.product_id')
+    //         .where('benefit_id', 'in', req.body.benefits.split(','))
+    // }
     let results = await q.fetch({
         withRelated: ['itemtype', 'essentialoil', 'scent', 'usage', 'benefit', 'size']
     })
