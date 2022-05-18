@@ -86,7 +86,7 @@ router.post("/search", async (req, res) => {
             .where('scent_id', 'in', req.body.scent)
     }
 
-    // // filter by benefits
+    // filter by benefits
     if (req.body.benefits) {
         q = q.query('join', 'benefits_products', 'products.id', 'benefits_products.product_id')
             .where('benefit_id', 'in', req.body.benefits)
