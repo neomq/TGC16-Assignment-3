@@ -32,6 +32,18 @@ router.get('/usages', async (req, res) => {
     res.send(allUsages)
 })
 
+// get scent profiles
+router.get('/scents', async (req, res) => {
+    let allScents = await productDataLayer.allScents()
+    res.send(allScents)
+})
+
+// get product benefits
+router.get('/benefits', async (req, res) => {
+    let allBenefits = await productDataLayer.allBenefits()
+    res.send(allBenefits)
+})
+
 // get individual product by id
 router.get('/:product_id', async (req, res) => {
     const productId = req.params.product_id
@@ -49,17 +61,6 @@ router.get('/:product_id', async (req, res) => {
 // search products
 router.post("/search", async (req, res) => {
     let q = Products.collection();
-
-    // search product name
-    // if (req.body.id) {
-    //     const findProducts = await q.where({
-    //         "id": req.body.id
-    //     }).fetch({
-    //         required: false,
-    //         // withRelated: ['itemtype', 'essentialoil', 'scent', 'usage', 'benefit', 'size']
-    //     })
-    //     res.send(findProducts)
-    // }
 
     // search by product name
     if (req.body.name) {
@@ -79,20 +80,32 @@ router.post("/search", async (req, res) => {
              .where('usage_id', 'in', req.body.use)
     }
 
-    // // filter by scent profile
-    // if (req.body.scent) {
-    //     q = q.query('join', 'products_scent', 'products.id', 'products_scent.product_id')
-    //         .where('scent_id', 'in', req.body.scent.split(','))
-    // }
+    // filter by scent profile
+    if (req.body.scent) {
+        q = q.query('join', 'products_scent', 'products.id', 'products_scent.product_id')
+            .where('scent_id', 'in', req.body.scent)
+    }
+
     // // filter by benefits
-    // if (req.body.benefits) {
-    //     q = q.query('join', 'benefits_products', 'products.id', 'benefits_products.product_id')
-    //         .where('benefit_id', 'in', req.body.benefits.split(','))
-    // }
+    if (req.body.benefits) {
+        q = q.query('join', 'benefits_products', 'products.id', 'benefits_products.product_id')
+            .where('benefit_id', 'in', req.body.benefits)
+    }
+
     let results = await q.fetch({
         withRelated: ['itemtype', 'essentialoil', 'scent', 'usage', 'benefit', 'size']
     })
-    res.send(results)
+
+    // display price in sgd
+    let displaySearchResults = results.toJSON()
+
+    // display product price in SGD
+    for (let p of displaySearchResults) {
+        let price_sgd = (p.price / 100).toFixed(2)
+        p.price_sgd = price_sgd
+    }
+    // console.log(displayProducts)
+    res.send(displaySearchResults)
 })
 
 module.exports = router;
