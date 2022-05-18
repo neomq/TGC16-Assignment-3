@@ -37,8 +37,8 @@ router.post('/login', async (req, res) => {
 
         console.log("Password matched!")
 
-        let accessToken = generateAccessToken(user, process.env.TOKEN_SECRET, "15m");
-        let refreshToken = generateAccessToken(user, process.env.REFRESH_TOKEN_SECRET, "7d");
+        let accessToken = generateAccessToken(user, process.env.TOKEN_SECRET, "1h");
+        let refreshToken = generateAccessToken(user, process.env.REFRESH_TOKEN_SECRET, "1d");
         let user_id = user.get("id");
 
         console.log("access token", accessToken)
@@ -135,5 +135,3 @@ router.post('/logout', async(req,res)=>{
 })
 
 module.exports = router;
-
-
