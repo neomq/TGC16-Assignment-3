@@ -269,8 +269,18 @@ router.get('/:product_id/delete', checkIfAuthenticated, async(req,res)=>{
     const product = await dataLayer.getProductByID(productId);
 
     console.log(product.toJSON())
+  
+    let productToDelete = product.toJSON()
+
+    let alert = ""
+    // if product exists in shopping cart / orders
+    if(productToDelete.cartitem.length > 0 || productToDelete.orderdetails.length > 0){
+        alert = "You cannot delete a product that has purchases!"
+      }
+    
     res.render('products/delete', {
-        'product': product.toJSON()
+        'product': product.toJSON(),
+        'alert': alert
     })
 });
 // process delete
@@ -388,8 +398,17 @@ router.get('/essential-oils/:essentialoil_id/delete', checkIfAuthenticated, asyn
     const essentialoilId = req.params.essentialoil_id
     const essentialoil = await dataLayer.getEssentialOilByID(essentialoilId);
 
+    // console.log(essentialoil.toJSON())
+
+    let oil = essentialoil.toJSON()
+    let alert = ""
+    if(oil.products.length > 0){
+        alert = "You cannot delete an essential oil that has been created in the product database!"
+    }
+
     res.render('essentialoils/delete', {
-        'essentialoil': essentialoil.toJSON()
+        'essentialoil': essentialoil.toJSON(),
+        'alert': alert
     })
 });
 // process delete

@@ -19,7 +19,13 @@ const Products = bookshelf.model('Products', {
     },
     benefit() {
         return this.belongsToMany('Benefit');
-    }
+    },
+    cartitem() {
+        return this.hasMany('CartItem')
+    },
+    orderdetails() {
+        return this.hasMany('Orderdetails')
+    },
 });
 
 const Itemtype = bookshelf.model('Itemtype', {

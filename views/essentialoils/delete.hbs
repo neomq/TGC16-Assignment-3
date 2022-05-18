@@ -19,10 +19,19 @@
                         <h4 class="alert-heading mb-0">Warning</h4>
                     </div>
                     <hr>
-                    <p>By deleting this, you will permanently lose all records of {{essentialoil.name}} Products. This action cannot be undone.</p>
+                    <p>{{alert}}</p>
+                    {{#if alert}}
+                        <p></p>
+                    {{else}}
+                        <p>By deleting this, you will permanently lose all records of {{essentialoil.name}} Products. This action cannot be undone.</p>
+                    {{/if}}
                 </div>
-                <input type="submit" class="btn btn-danger" value="Yes, Delete"/>
-                <a href="/products/essential-oils" class="btn btn-outline-secondary">No, Keep</a>
+                {{#if alert}}
+                    <a href="/products/essential-oils" class="btn btn-outline-secondary">Cancel Delete</a>
+                {{else}}
+                    <input type="submit" class="btn btn-danger" value="Yes, Delete"/>
+                    <a href="/products/essential-oils" class="btn btn-outline-secondary">No, Keep</a>
+                {{/if}}
             </div>
         </form>
     </div>

@@ -36,7 +36,7 @@ const getProductByID = async (productId) => {
         'id': productId
     }).fetch({
         require: true,
-        withRelated:['essentialoil', 'scent', 'usage', 'benefit', 'itemtype', 'size']
+        withRelated:['essentialoil', 'scent', 'usage', 'benefit', 'itemtype', 'size', 'cartitem', 'orderdetails']
     })
 }
 
@@ -44,7 +44,8 @@ const getEssentialOilByID = async (essentialoilId) => {
     return await Essentialoils.where({
         'id': essentialoilId
     }).fetch({
-        require: true
+        require: true,
+        withRelated:['products']
     })
 }
 
