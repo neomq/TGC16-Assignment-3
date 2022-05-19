@@ -385,7 +385,7 @@ router.post('/essential-oils/:essentialoil_id/update', checkIfAuthenticated, asy
         'error': async (form) => {
             res.render('products/update', {
                 'form': form.toHTML(bootstrapField),
-                'product': product.toJSON()
+                'essentialoil': essentialoil.toJSON()
             })
         }
     })
