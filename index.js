@@ -108,11 +108,11 @@ const api = {
 }
 
 async function main() {
-    app.use('/', landingRoutes);
-    app.use('/products', productRoutes);
-    app.use('/cloudinary', cloudinaryRoutes);
-    app.use('/users', userRoutes);
-    app.use('/orders', orderRoutes);
+    app.use('/aromaadmin', landingRoutes);
+    app.use('/aromaadmin/products', productRoutes);
+    app.use('/aromaadmin/cloudinary', cloudinaryRoutes);
+    app.use('/aromaadmin/users', userRoutes);
+    app.use('/aromaadmin/orders', orderRoutes);
 
     app.use('/api/products', express.json(), api.products); 
     app.use('/api/users', express.json(), api.users);
@@ -122,10 +122,6 @@ async function main() {
 
 main();
 
-// app.listen(3000, () => {
-//   console.log("Server has started");
-// });
-
 app.listen(process.env.PORT, () => {
-  console.log("Server has started");
+  console.log("Server has started on port: " + process.env.PORT);
 });

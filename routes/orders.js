@@ -36,7 +36,7 @@ router.get("/", checkIfAuthenticated, async (req, res) => {
                 let order_date_formatted = order.date.toString().split(' G')[0]
                 order.date_formatted = order_date_formatted
             }
-            // console.log(allOrders)
+
             res.render('orders/index', {
                 'orders': allOrders,
                 'form': form.toHTML(bootstrapFieldcol3)
@@ -183,7 +183,7 @@ router.post('/:order_id/update', checkIfAuthenticated, async (req, res) => {
             order.save();
 
             req.flash("success_messages", `Order has been updated!`)
-            res.redirect('/orders');
+            res.redirect('/aromaadmin/orders');
         },
         'error': async (form) => {
             res.render('orders/update', {
@@ -237,7 +237,7 @@ router.post('/:order_id/delete', checkIfAuthenticated, async(req,res)=>{
     await orderDetail.destroy;
 
     req.flash("success_messages", `Order has been deleted`)
-    res.redirect('/orders')
+    res.redirect('/aromaadmin/orders')
 })
 
 

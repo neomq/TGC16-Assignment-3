@@ -13,7 +13,7 @@ const generateAccessToken = (user, secret, expiresIn) => {
     }, secret, {
         'expiresIn': expiresIn
     });
-    console.log(jwtAccessToken)
+
     return jwtAccessToken
 }
 
@@ -30,19 +30,14 @@ router.post('/login', async (req, res) => {
         require: false
     });
 
-    console.log(user.get('password'))
-    console.log(getHashedPassword(req.body.password))
 
     if (user && user.get('password') == getHashedPassword(req.body.password)) {
 
-        console.log("Password matched!")
 
         let accessToken = generateAccessToken(user, process.env.TOKEN_SECRET, "1h");
         let refreshToken = generateAccessToken(user, process.env.REFRESH_TOKEN_SECRET, "1d");
         let user_id = user.get("id");
 
-        console.log("access token", accessToken)
-        console.log("refresh token", refreshToken)
 
         res.status(200) // login success
         res.send({

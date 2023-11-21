@@ -5,7 +5,7 @@ const checkIfAuthenticated = function(req,res,next) {
         next();
     } else {
         req.flash("error_messages", "Unable to comply. Please login to your account.");
-        res.redirect('/users/login');
+        res.redirect('/aromaadmin/users/login');
     }
 }
 

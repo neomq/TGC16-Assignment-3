@@ -37,7 +37,7 @@ router.get('/', checkIfAuthenticated, async (req, res) => {
            let products = await q.fetch({
                withRelated: ['itemtype', 'essentialoil', 'scent', 'usage', 'benefit', 'size']
            })
-           console.log(products.toJSON())
+
            res.render('products/index', {
                'products': products.toJSON(),
                'form': form.toHTML(bootstrapFieldcol3)
@@ -83,7 +83,7 @@ router.get('/', checkIfAuthenticated, async (req, res) => {
            let products = await q.fetch({
                withRelated: ['itemtype', 'essentialoil', 'scent', 'usage', 'benefit', 'size']
            })
-           //console.log(products.toJSON())
+
            res.render('products/index', {
                'products': products.toJSON(),
                'form': form.toHTML(bootstrapFieldcol3)
@@ -124,14 +124,13 @@ router.post('/create', checkIfAuthenticated, async(req, res) => {
     const allBenefits = await dataLayer.allBenefits();
 
     const productForm = createProductForm(allItemTypes, allSizes, allEssentialOils, allScents, allUsages, allBenefits);
-    console.log(productForm)
     
     productForm.handle(req, {
         'success': async (form) => {
             
             let {scent, usage, benefit, ...productData} = form.data;
             const product = new Products(productData);
-            //console.log(product)
+
             await product.save();
 
             if (scent) {
@@ -145,7 +144,7 @@ router.post('/create', checkIfAuthenticated, async(req, res) => {
             }
 
             req.flash("success_messages", `New Product has been created`)
-            res.redirect('/products');
+            res.redirect('/aromaadmin/products');
         },
         'error': async (form) => {
             res.render('products/create', {
@@ -250,7 +249,7 @@ router.post('/:product_id/update', checkIfAuthenticated, async (req, res) => {
 
             req.flash("success_messages", `Product has been updated!`)
 
-            res.redirect('/products');
+            res.redirect('/aromaadmin/products');
         },
         'error': async (form) => {
             res.render('products/update', {
@@ -267,8 +266,6 @@ router.get('/:product_id/delete', checkIfAuthenticated, async(req,res)=>{
     // fetch the product that we want to delete
     const productId = req.params.product_id
     const product = await dataLayer.getProductByID(productId);
-
-    console.log(product.toJSON())
   
     let productToDelete = product.toJSON()
 
@@ -293,14 +290,14 @@ router.post('/:product_id/delete', checkIfAuthenticated, async(req,res)=>{
     await product.destroy();
 
     req.flash("success_messages", `Product has been deleted!`)
-    res.redirect('/products')
+    res.redirect('/aromaadmin/products')
 })
 
 // GET ALL ESSENTIAL OILS
 router.get('/essential-oils', checkIfAuthenticated, async (req, res) => {
     // fetch all the essential oils (ie, SELECT * from essentialOils)
     let essentialoils = await Essentialoils.collection().fetch();
-    console.log(essentialoils.toJSON())
+
     res.render('essentialoils/index', {
         'essentialoils': essentialoils.toJSON()
     })
@@ -329,7 +326,7 @@ router.post('/essential-oils/create', checkIfAuthenticated, async(req, res) => {
 
             req.flash("success_messages", `Essential oil has been created!`)
 
-            res.redirect('/products/essential-oils');
+            res.redirect('/aromaadmin/products/essential-oils');
         },
         'error': async (form) => {
             res.render('essentialoils/create', {
@@ -380,7 +377,7 @@ router.post('/essential-oils/:essentialoil_id/update', checkIfAuthenticated, asy
 
             req.flash("success_messages", `Essential oil has been updated!`)
 
-            res.redirect('/products/essential-oils');
+            res.redirect('/aromaadmin/products/essential-oils');
         },
         'error': async (form) => {
             res.render('products/update', {
@@ -397,8 +394,6 @@ router.get('/essential-oils/:essentialoil_id/delete', checkIfAuthenticated, asyn
     // fetch the product that we want to delete
     const essentialoilId = req.params.essentialoil_id
     const essentialoil = await dataLayer.getEssentialOilByID(essentialoilId);
-
-    // console.log(essentialoil.toJSON())
 
     let oil = essentialoil.toJSON()
     let alert = ""
@@ -422,7 +417,7 @@ router.post('/essential-oils/:essentialoil_id/delete', checkIfAuthenticated, asy
 
     req.flash("success_messages", `Essential oil has been deleted!`)
 
-    res.redirect('/products/essential-oils')
+    res.redirect('/aromaadmin/products/essential-oils')
 })
 
 

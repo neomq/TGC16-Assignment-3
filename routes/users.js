@@ -32,7 +32,7 @@ router.post('/register', (req, res) => {
             });
             await user.save();
             req.flash("success_messages", "User signed up successfully!");
-            res.redirect('/users/login')
+            res.redirect('/aromaadmin/users/login')
         },
         'error': (form) => {
             res.render('users/register', {
@@ -65,7 +65,7 @@ router.post('/login', async (req, res) => {
 
             if (!user) {
                 req.flash("error_messages", "Sorry, the authentication details you provided does not work.")
-                res.redirect('/users/login');
+                res.redirect('/aromaadmin/users/login');
             } else {
                 // check if the password matches
                 if (user.get('password') === getHashedPassword(form.data.password)) {
@@ -78,10 +78,10 @@ router.post('/login', async (req, res) => {
                         email: user.get('email')
                     }
                     req.flash("success_messages", "Welcome back, " + user.get('name'));
-                    res.redirect('/users/profile');
+                    res.redirect('/aromaadmin/users/profile');
                 } else {
                     req.flash("error_messages", "Sorry, the authentication details you provided does not work.")
-                    res.redirect('/users/login')
+                    res.redirect('/aromaadmin/users/login')
                 }
             }
         },
@@ -99,7 +99,7 @@ router.get('/profile', (req, res) => {
     const user = req.session.user;
     if (!user) {
         req.flash('error_messages', 'You do not have permission to view this page');
-        res.redirect('/users/login');
+        res.redirect('/aromaadmin/users/login');
     } else {
         res.render('users/profile',{
             'user': user
@@ -111,7 +111,7 @@ router.get('/profile', (req, res) => {
 router.get('/logout', (req, res) => {
     req.session.user = null;
     req.flash('success_messages', "Goodbye");
-    res.redirect('/users/login');
+    res.redirect('/aromaadmin/users/login');
 })
 
 module.exports = router;

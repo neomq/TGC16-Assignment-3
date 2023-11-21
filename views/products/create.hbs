@@ -2,32 +2,33 @@
 
 {{#block 'content'}}
 
- <div class="row m-0">
+<div class="row m-0">
     {{!-- Form --}}
     <div class="row m-0 px-4 pt-4">
         <div class="pb-3 mb-3 border-bottom">
             <h4 class="display-6">Add Product</h4>
         </div>
         <form method="POST">
-            <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+            <input type="hidden" name="_csrf" value="{{csrfToken}}" />
             {{!-- Upload image --}}
             <div class="pt-3 pb-2">
                 <div class="p-3 my-2 border">
-                        <p class="fs-6 text-muted text-center fw-light">Click on "Upload Image" to upload a product image</p>
-                        <div class="d-grid col-2 mx-auto">
-                            <button type="button" class="btn btn-sm btn-primary" id="upload_widget">Upload Image</button>
-                        </div>
-                        <img src="" style="display:none" width="200" height="200" id="uploaded_image"/>
+                    <p class="fs-6 text-muted text-center fw-light">Click on "Upload Image" to upload a product image
+                    </p>
+                    <div class="d-grid col-2 mx-auto">
+                        <button type="button" class="btn btn-sm btn-primary" id="upload_widget">Upload Image</button>
+                    </div>
+                    <img src="" style="display:none" width="200" height="200" id="uploaded_image" />
                 </div>
             </div>
             {{{form}}}
             <div class="d-grid gap-2 d-md-block my-4">
-                <input type="submit" value="Add Product" class="btn btn-primary"/>
-                <a class="btn btn-outline-primary" href="/products" role="button">Cancel</a>
+                <input type="submit" value="Add Product" class="btn btn-primary" />
+                <a class="btn btn-outline-primary" href="/aromaadmin/products" role="button">Cancel</a>
             </div>
         </form>
     </div>
- </div>
+</div>
 
 {{/block}}
 
@@ -35,7 +36,9 @@
 
 {{#block 'js'}}
 {{!-- Initialise Cloudinary --}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+    integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+    crossorigin="anonymous"></script>
 <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
 
 {{!-- Get signature --}}
@@ -44,8 +47,8 @@
     const cloudinaryApiKey = '{{cloudinaryApiKey}}';
     const cloudinaryPreset = '{{cloudinaryPreset}}';
     async function generateSignature(callback, params_to_sign) {
-        let response = await axios.get('/cloudinary/sign',{
-            'params':{
+        let response = await axios.get('/aromaadmin/cloudinary/sign', {
+            'params': {
                 params_to_sign
             }
         });
@@ -69,9 +72,9 @@
             document.querySelector("#uploaded_image").src = result.info.url;
             document.querySelector("#uploaded_image").style.display = 'inline';
         }
-    
+
     })
-    document.querySelector("#upload_widget").addEventListener('click', function(){
+    document.querySelector("#upload_widget").addEventListener('click', function () {
         myWidget.open();
     })
 </script>

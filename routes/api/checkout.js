@@ -32,7 +32,6 @@ router.get('/:user_id', async function(req,res) {
         })
     }
 
-    // console.log("line items: ",lineItems);
 
     // 3. send the line items to Stripe and get a stripe payment id
     let metaData = JSON.stringify(meta);
@@ -46,7 +45,6 @@ router.get('/:user_id', async function(req,res) {
         }
     }
 
-    // console.log("payment:", payment);
 
     // 4. register the payment
     let stripeSession = await stripe.checkout.sessions.create(payment);
@@ -80,13 +78,15 @@ router.post('/process_payment', express.raw({
     let event;
     try {
         event = stripe.webhooks.constructEvent(payload, sigHeader, endpointSecret);
+        console.log(event.type)
     } catch(e) {
+        console.log(e.message)
         res.send({
             "error": e.message
         })
-        // console.log(e.message)
     }
-    console.log(event)
+
+    console.log(event.type)
     if (event.type === 'checkout.session.completed') {
         // let stripeSession = event.data.object; 
 

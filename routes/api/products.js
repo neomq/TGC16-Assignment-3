@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
         let price_sgd = (p.price / 100).toFixed(2)
         p.price_sgd = price_sgd
     }
-    // console.log(displayProducts)
+
     res.send(displayAllProducts)
 })
 
@@ -104,7 +104,7 @@ router.post("/search", async (req, res) => {
         let price_sgd = (p.price / 100).toFixed(2)
         p.price_sgd = price_sgd
     }
-    // console.log(displayProducts)
+
     res.send(displaySearchResults)
 })
 
