@@ -31,7 +31,7 @@ router.post('/register', (req, res) => {
                 'role': 'administrator'
             });
             await user.save();
-            req.flash("success_messages", "User signed up successfully!");
+            req.flash("success_messages", "Admin user signed up successfully!");
             res.redirect('/aromaadmin') // if the admin is logged in, does not make sense to redirect admin back to login!
         },
         'error': (form) => {
@@ -58,7 +58,8 @@ router.post('/login', async (req, res) => {
 
             // ...find the user by email and password
             let user = await User.where({
-                'email': form.data.email
+                'email': form.data.email,
+                'role' : 'administrator' // only do a db query based on role of admin!
             }).fetch({
                 require: false
             });
