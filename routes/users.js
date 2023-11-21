@@ -32,7 +32,7 @@ router.post('/register', (req, res) => {
             });
             await user.save();
             req.flash("success_messages", "User signed up successfully!");
-            res.redirect('/aromaadmin/users/login')
+            res.redirect('/aromaadmin') // if the admin is logged in, does not make sense to redirect admin back to login!
         },
         'error': (form) => {
             res.render('users/register', {
