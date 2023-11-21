@@ -40,6 +40,12 @@ app.use(cors());
 //   saveUninitialized: true
 // }))
 
+app.use(session({
+  secret: process.env.SESSION_SECRET_KEY,
+  resave: false,
+  saveUninitialized: true
+}))
+
 app.use(flash())
 
 // Register Flash middleware
