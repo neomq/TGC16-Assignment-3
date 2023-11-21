@@ -1,9 +1,24 @@
 {{#extends 'base'}}
 
 {{#block 'content'}}
-<div class="container col-6 mt-4">
-    <h1 class="text-center">Welcome!</h1>
-    <p class="text-center">Click <a href="/aromaadmin/users/login">here </a>to log in to your account.</p>
+<style>
+    .image {
+        height: 100vh;
+        background-size: cover;
+        background-position: center;
+        background-image: url("https://res.cloudinary.com/dfyhd6bpb/image/upload/v1699716548/m5kqhsghdfsp4h4vub3c.jpg");
+    }
+</style>
+<div>
+    <div class="image"></div>
+    <div class="position-absolute top-50 start-50 translate-middle">
+        <div class="text-light text-center fs-1">
+            Welcome to Aroma Admin Site!
+        </div>
+        <div class="justify-content-center d-flex">
+        </div>
+
+    </div>
 </div>
 {{/block}}
 {{/extends}}
