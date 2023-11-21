@@ -78,15 +78,12 @@ router.post('/process_payment', express.raw({
     let event;
     try {
         event = stripe.webhooks.constructEvent(payload, sigHeader, endpointSecret);
-        console.log(event.type)
     } catch(e) {
-        console.log(e.message)
         res.send({
             "error": e.message
         })
     }
 
-    console.log(event.type)
     if (event.type === 'checkout.session.completed') {
         // let stripeSession = event.data.object; 
 

@@ -67,7 +67,6 @@
             console.log(error);
         };
         if (!error && result && result.event === 'success') {
-            console.log(result);
             document.querySelector('#id_image').value = result.info.url;
             document.querySelector("#uploaded_image").src = result.info.url;
             document.querySelector("#uploaded_image").style.display = 'inline';
