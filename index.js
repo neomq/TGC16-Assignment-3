@@ -46,6 +46,8 @@ app.use(session({
   saveUninitialized: true
 }))
 
+app.use("/public", express.static('public')); 
+
 app.use(flash())
 
 // Register Flash middleware
