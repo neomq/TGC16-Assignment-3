@@ -62,14 +62,14 @@ router.get("/", checkIfAuthenticated, async (req, res) => {
         'success': async (form) => {
             if (form.data.name) {
                 q = q.query('join', 'users', 'user_id', 'users.id')
-                        .where('users.name', 'ilike', '%' + req.query.name + '%')
+                        .where('users.name', 'like', '%' + req.query.name + '%')
             }
             if (form.data.email) {
                 q = q.query('join', 'users', 'user_id', 'users.id')
-                        .where('users.email', 'ilike', '%' + req.query.email + '%')
+                        .where('users.email', 'like', '%' + req.query.email + '%')
             }
             if (form.data.shipping_address) {
-                q = q.where('shipping_address', 'ilike', '%' + req.query.shipping_address + '%')
+                q = q.where('shipping_address', 'like', '%' + req.query.shipping_address + '%')
             }
             if (form.data.order_status_id && form.data.order_status_id != "0") {
                 q = q.where('order_status_id', '=', req.query.order_status_id)
