@@ -65,7 +65,7 @@ router.post("/search", async (req, res) => {
     // search by product name
     if (req.body.name) {
         q = q.query('join', 'essentialoils', 'essentialoils.id', 'products.essentialoil_id')
-            .where('essentialoils.name', 'ilike', '%' + req.body.name + '%')
+            .where('essentialoils.name', 'like', '%' + req.body.name + '%')
     }
 
     // filter by product type
