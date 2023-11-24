@@ -110,6 +110,7 @@ const orderRoutes = require('./routes/orders');
 // API routes
 const api = {
   products: require('./routes/api/products'),
+  essentialoils: require('./routes/api/essentialoils'),
   users: require('./routes/api/users'),
   shoppingcart: require('./routes/api/shoppingCart'),
   checkout: require("./routes/api/checkout")
@@ -123,6 +124,7 @@ async function main() {
     app.use('/aromaadmin/orders', orderRoutes);
 
     app.use('/api/products', express.json(), api.products); 
+    app.use('/api/essentialoils', express.json(), api.essentialoils);
     app.use('/api/users', express.json(), api.users);
     app.use('/api/cart', express.json(), api.shoppingcart);
     app.use('/api/checkout', api.checkout);
