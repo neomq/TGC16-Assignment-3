@@ -45,7 +45,7 @@ const getEssentialOilByID = async (essentialoilId) => {
         'id': essentialoilId
     }).fetch({
         require: true,
-        withRelated:['products']
+        withRelated:['products.size', 'products.itemtype']
     })
 }
 
