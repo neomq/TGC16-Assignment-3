@@ -7,9 +7,9 @@ const { User, BlacklistedToken } = require('../../models');
 
 const generateAccessToken = (user, secret, expiresIn) => {
     const jwtAccessToken = jwt.sign({
-        'id': user.get('id'),
-        'name': user.get('name'),
-        'email': user.get('email')
+        'id': user.id,
+        'name': user.name,
+        'email': user.email
     }, secret, {
         'expiresIn': expiresIn
     });
@@ -34,7 +34,7 @@ router.post('/login', async (req, res) => {
     if (user && user.get('password') == getHashedPassword(req.body.password)) {
 
 
-        let accessToken = generateAccessToken(user, process.env.TOKEN_SECRET, "1h");
+        let accessToken = generateAccessToken(user, process.env.TOKEN_SECRET, "15m");
         let refreshToken = generateAccessToken(user, process.env.REFRESH_TOKEN_SECRET, "1d");
         let user_id = user.get("id");
 
